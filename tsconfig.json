@@ -15,9 +15,5 @@
     // "noUnusedParameters": true,  /* Report errors on unused parameters. */
     "useUnknownInCatchVariables": false
   },
-  "include": [
-    "src/**/*.ts",
-    "./node_modules/vscode/vscode.d.ts",
-    "./node_modules/vscode/lib/*"
-  ]
+  "include": ["src/**/*.ts"]
 }
