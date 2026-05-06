@@ -171,7 +171,7 @@
     "ovsx": "^0.10.0",
     "pinst": "^3.0.0",
     "prettier": "^2.0.2",
-    "commit-and-tag-version": "^9.5.0",
+    "commit-and-tag-version": "^12.0.0",
     "string-replace-loader": "^3.0.1",
     "ts-loader": "^9.0.0",
     "typescript": "^5.0.0",
