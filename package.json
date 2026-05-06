@@ -166,7 +166,7 @@
     "@types/vscode": "^1.44.0",
     "@vscode/vsce": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0",
-    "husky": "8",
+    "husky": "9",
     "lint-staged": "^13.0.0",
     "ovsx": "^0.10.0",
     "pinst": "^3.0.0",
