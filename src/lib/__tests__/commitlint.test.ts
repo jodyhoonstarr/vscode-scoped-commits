@@ -2,13 +2,13 @@
  * @since 2024-06-25 18:53
  * @author vivaxy
  */
-import { expect, test, jest } from '@jest/globals';
+import { expect, test, vi } from 'vitest';
 import * as path from 'path';
 import commitlint from '../commitlint';
 
-jest.mock('../output', function () {
+vi.mock('../output', function () {
   return {
-    info: jest.fn(),
+    info: vi.fn(),
     error: console.error,
     warning: console.warn,
   };
