@@ -167,7 +167,7 @@
     "@vscode/vsce": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "husky": "9",
-    "lint-staged": "^13.0.0",
+    "lint-staged": "^17.0.0",
     "ovsx": "^0.10.0",
     "pinst": "^3.0.0",
     "prettier": "^2.0.2",
