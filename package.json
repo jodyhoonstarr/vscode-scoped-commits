@@ -163,7 +163,7 @@
   "devDependencies": {
     "@types/node": "^16.0.0",
     "@types/vscode": "^1.44.0",
-    "@vscode/vsce": "^2.16.0",
+    "@vscode/vsce": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "husky": "8",
     "lint-staged": "^13.0.0",
