@@ -21,12 +21,12 @@ jobs:
       extension_name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
 
       - name: Setup nodejs
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v6.4.0
         with:
           node-version: 14
 
@@ -41,7 +41,7 @@ jobs:
           yarn standard-version --skip.changelog --skip.commit --skip.tag
 
       - name: Generate name for artifact
-        uses: actions/github-script@v6.4.0
+        uses: actions/github-script@v9
         id: version
         with:
           result-encoding: string
@@ -59,7 +59,7 @@ jobs:
         run: yarn build
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v7
         with:
           name: ${{steps.version.outputs.repo}}-${{steps.version.outputs.beta}}.vsix
           path: "*.vsix"
@@ -102,7 +102,7 @@ jobs:
           printf "[summary](${{env.WORKFLOW_URL}}#annotations). 😥" >> ./pr/comment
 
       - name: Upload the PR information
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v7
         if: ${{ github.event_name == 'pull_request' }}
         with:
           name: pr

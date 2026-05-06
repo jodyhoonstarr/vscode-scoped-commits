@@ -4,7 +4,7 @@
   "description": "💬Conventional Commits for VSCode.",
   "icon": "assets/icon.png",
   "publisher": "vivaxy",
-  "version": "1.25.0",
+  "version": "1.27.0",
   "engines": {
     "vscode": "^1.44.0"
   },
@@ -72,6 +72,11 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "%extension.configuration.autoCommit.markdownDescription%"
+        },
+        "conventionalCommits.storeScopesGlobally": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.storeScopesGlobally.markdownDescription%"
         },
         "conventionalCommits.silentAutoCommit": {
           "type": "boolean",
@@ -151,8 +156,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "deploy": "vsce publish --yarn",
-    "build": "node prepare.js && vsce package",
-    "_build": "vsce package",
+    "build": "node prepare.js && vsce package --yarn",
+    "_build": "vsce package --yarn",
     "prepare": "husky install",
     "test": "jest"
   },
@@ -160,15 +165,15 @@
     "@jest/globals": "^29.7.0",
     "@types/node": "^16.0.0",
     "@types/vscode": "^1.44.0",
-    "@vscode/vsce": "^2.16.0",
+    "@vscode/vsce": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "husky": "8",
     "jest": "^29.7.0",
     "lint-staged": "^13.0.0",
-    "ovsx": "^0.5.0",
+    "ovsx": "^0.10.0",
     "pinst": "^3.0.0",
     "prettier": "^2.0.2",
-    "standard-version": "^9.0.0",
+    "commit-and-tag-version": "^9.5.0",
     "string-replace-loader": "^3.0.1",
     "ts-jest": "^29.1.5",
     "ts-loader": "^9.0.0",
