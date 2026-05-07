@@ -51,6 +51,17 @@ const config = {
         options: {
           multiple: [
             {
+              search: 'const require = createRequire(import.meta.url);',
+              replace: '',
+              strict: true,
+            },
+            {
+              search:
+                'const __dirname = path.resolve(fileURLToPath(import.meta.url), "..");',
+              replace: 'const __dirname = path.resolve(__filename, "..");',
+              strict: true,
+            },
+            {
               search:
                 'const imported = await import(path.isAbsolute(id) ? pathToFileURL(id).toString() : id);',
               replace:
@@ -84,6 +95,16 @@ const config = {
         loader: 'string-replace-loader',
         options: {
           multiple: [
+            {
+              search: 'const require = createRequire(import.meta.url);',
+              replace: '',
+              strict: true,
+            },
+            {
+              search: '        : import.meta.url);',
+              replace: '        : pathToFileURL(__filename));',
+              strict: true,
+            },
             {
               search: 'return require(id);',
               replace: 'return __non_webpack_require__(id);',
