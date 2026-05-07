@@ -178,7 +178,7 @@
     "vitest": "^3.2.4",
     "warnings-to-errors-webpack-plugin": "^2.0.1",
     "webpack": "^5.76.0",
-    "webpack-cli": "^4.5.0"
+    "webpack-cli": "^7.0.0"
   },
   "lint-staged": {
     "*.{js,ts,css,less,json,md,html,yml,yaml,pcss,jsx,tsx}": [
