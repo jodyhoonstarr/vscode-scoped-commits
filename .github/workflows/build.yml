@@ -38,7 +38,7 @@ jobs:
 
       - name: Bump version
         run: |
-          yarn standard-version --skip.changelog --skip.commit --skip.tag
+          npx commit-and-tag-version --skip.changelog --skip.commit --skip.tag
 
       - name: Generate name for artifact
         uses: actions/github-script@v9

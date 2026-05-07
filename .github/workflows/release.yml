@@ -29,7 +29,7 @@ jobs:
       - name: Bump version
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
-          yarn standard-version --skip.commit --skip.tag
+          npx commit-and-tag-version --skip.commit --skip.tag
           sed 's/^### \[/## [/' -i CHANGELOG.md
           yarn prettier --write CHANGELOG.md  --prose-wrap never --ignore-path ./gitignore
 
