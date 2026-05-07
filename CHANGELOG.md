@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.28.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.27.0...v1.28.0) (2026-05-07)
+
+### Features
+
+- **i18n:** :globe_with_meridians: add Turkish language support ([035d007](https://github.com/vivaxy/vscode-conventional-commits/commit/035d007ad9e3983a206158a494fccfc0f372a62d))
+
+### Bug Fixes
+
+- **build:** drop legacy vscode npm pkg to resolve TS2673 ([0907eca](https://github.com/vivaxy/vscode-conventional-commits/commit/0907ecab67c4f29a1bd47facdd6f0fe22a10331a))
+- **deps:** update commitlint monorepo to v20 ([2df4fcf](https://github.com/vivaxy/vscode-conventional-commits/commit/2df4fcfe6e3bb812acdfbcb8dd6ffcadb7f820d0))
+
 ## [1.27.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.26.0...v1.27.0) (2025-12-14)
 
 ### Features
