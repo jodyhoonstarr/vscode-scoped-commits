@@ -160,7 +160,7 @@
     "_build": "vsce package --yarn",
     "prepare": "husky install",
     "test": "vitest run",
-    "test:e2e": "yarn webpack && tsc -p e2e-test && node ./out-e2e/runTest.js"
+    "test:e2e": "yarn webpack && tsc -p e2e-test && node ./e2e-test/out/runTest.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.0",

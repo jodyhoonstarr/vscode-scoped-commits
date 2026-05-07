@@ -7,8 +7,8 @@ import { runTests } from '@vscode/test-electron';
 import { createMockRepo, cleanupMockRepo } from './mock-repo';
 
 async function main(): Promise<void> {
-  // Repo root = two levels up from this compiled file (out-e2e/runTest.js).
-  const extensionDevelopmentPath = path.resolve(__dirname, '..');
+  // Repo root = two levels up from this compiled file (e2e-test/out/runTest.js).
+  const extensionDevelopmentPath = path.resolve(__dirname, '..', '..');
   // Mocha entrypoint VS Code's test-electron loads inside the host.
   const extensionTestsPath = path.resolve(__dirname, 'suite', 'index.js');
 
