@@ -11,6 +11,10 @@ workflow uses it.
 - `yarn test` — run the full test suite (vitest, see `vitest.config.ts`).
 - `yarn test src/lib/__tests__/commit-message.test.ts` — run a single test file.
 - `yarn test -t "<name pattern>"` — run a single test case by name.
+- `yarn test:e2e` — end-to-end test: build the bundle, launch VS Code in a temp
+  git repo, drive the conventional-commits flow non-interactively, assert a real
+  commit landed. Sources live under `e2e-test/`. The first run downloads a VS
+  Code build into `.vscode-test/` (network access required).
 - `yarn watch` — `tsc -watch` for incremental type-checking during development.
 - `yarn webpack` — bundle the extension to `dist/extension.js` in development
   mode.

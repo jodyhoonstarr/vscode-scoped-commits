@@ -159,14 +159,19 @@
     "build": "node prepare.js && vsce package --yarn",
     "_build": "vsce package --yarn",
     "prepare": "husky install",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "yarn webpack && tsc -p e2e-test && node ./out-e2e/runTest.js"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.0",
     "@types/node": "^24.0.0",
     "@types/vscode": "^1.44.0",
+    "@vscode/test-electron": "^2.4.0",
     "@vscode/vsce": "^3.0.0",
     "clean-webpack-plugin": "^4.0.0",
+    "glob": "^11.0.0",
     "husky": "9",
+    "mocha": "^11.0.0",
     "lint-staged": "^17.0.0",
     "ovsx": "^0.10.0",
     "pinst": "^3.0.0",

@@ -6,7 +6,18 @@ import load from '@commitlint/load/lib/load';
 import rules from '@commitlint/rules';
 import { RulesConfig, RuleConfigSeverity } from '@commitlint/types/lib/rules';
 import { UserPromptConfig } from '@commitlint/types/lib/prompt';
-import { Commit } from '@commitlint/types/lib/parse';
+// `Commit` is intentionally a minimal local shape covering only the fields
+// the lint helpers below cast through. @commitlint/types v20 stopped
+// re-exporting `Commit` from `parse.d.ts`, and conventional-commits-parser v4
+// (the upstream source) ships without type declarations.
+type Commit = {
+  type?: string | null;
+  scope?: string | null;
+  subject?: string | null;
+  header?: string | null;
+  body?: string | null;
+  footer?: string | null;
+};
 import * as output from './output';
 
 class Commitlint {

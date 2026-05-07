@@ -154,6 +154,15 @@ Or `\\n` in JSON format.
 2. The effect of code changes needs to reactivate the extension. Just restart
    the task.
 
+### Tests
+
+- `yarn test` runs the unit test suite (vitest).
+- `yarn test:e2e` runs the end-to-end suite: it builds the extension bundle,
+  launches a real VS Code instance against a temporary git repo, drives the
+  conventional-commits flow non-interactively, and asserts a real commit lands
+  on `HEAD`. Sources live under `e2e-test/`. The first run downloads a VS Code
+  build into `.vscode-test/` (network access required).
+
 [vscode-tsl-problem-matcher]:
   https://github.com/eamodio/vscode-tsl-problem-matcher
 
