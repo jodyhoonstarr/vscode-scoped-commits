@@ -28,7 +28,7 @@ jobs:
       - name: Setup nodejs
         uses: actions/setup-node@v6.4.0
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Setup package
         run: yarn install
