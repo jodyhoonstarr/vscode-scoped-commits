@@ -1,6 +1,12 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [1.28.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.0...v1.28.1) (2026-05-08)
+
+### Bug Fixes
+
+- patch import.meta.url in [@commitlint](https://github.com/commitlint) v20 ESM bundle ([#383](https://github.com/vivaxy/vscode-conventional-commits/issues/383)) ([9a9ffe9](https://github.com/vivaxy/vscode-conventional-commits/commit/9a9ffe972c765a520225fe06e066c4081e758bf3))
 
 ## [1.28.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.27.0...v1.28.0) (2026-05-07)
 
