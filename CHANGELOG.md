@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.28.2](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.1...v1.28.2) (2026-05-12)
+
+### Bug Fixes
+
+- **bundle:** stop redirecting cosmiconfig bundled deps to **non_webpack_require** ([846f89f](https://github.com/vivaxy/vscode-conventional-commits/commit/846f89f50d3e91f47f561717bc9d085e64649722)), closes [#391](https://github.com/vivaxy/vscode-conventional-commits/issues/391)
+
 ## [1.28.1](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.0...v1.28.1) (2026-05-08)
 
 ### Bug Fixes
