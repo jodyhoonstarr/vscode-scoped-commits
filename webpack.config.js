@@ -127,9 +127,13 @@ const config = {
         },
       },
       // cosmiconfig (transitively used by @commitlint/load's loadConfig)
-      // dynamically loads commitlint config files via `await import(href)` and
-      // lazily requires `typescript` for `.ts` configs. Both call sites are
-      // expressions webpack cannot statically resolve.
+      // dynamically loads commitlint config files via `await import(href)` where
+      // href is a runtime file:// URL pointing to the user's workspace config.
+      // Webpack cannot statically resolve this, so we redirect it to
+      // __non_webpack_require__ so Node resolves it at runtime.
+      // typescript is a workspace dep that must also resolve at runtime.
+      // parse-json, js-yaml, and import-fresh are cosmiconfig's own bundled deps
+      // and must NOT be redirected — webpack bundles them normally.
       {
         enforce: 'pre',
         test: /cosmiconfig[\/\\]dist[\/\\]loaders\.js/,
@@ -139,21 +143,6 @@ const config = {
             {
               search: 'return (await import(href)).default;',
               replace: 'return (await __non_webpack_require__(href)).default;',
-              strict: true,
-            },
-            {
-              search: "importFresh = require('import-fresh');",
-              replace: "importFresh = __non_webpack_require__('import-fresh');",
-              strict: true,
-            },
-            {
-              search: "parseJson = require('parse-json');",
-              replace: "parseJson = __non_webpack_require__('parse-json');",
-              strict: true,
-            },
-            {
-              search: "yaml = require('js-yaml');",
-              replace: "yaml = __non_webpack_require__('js-yaml');",
               strict: true,
             },
             {

@@ -16,6 +16,7 @@
 
 import * as assert from 'assert';
 import { execFileSync } from 'child_process';
+import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 
@@ -401,6 +402,106 @@ suite('extension.conventionalCommits e2e', () => {
       stubs.remaining(),
       0,
       `all scripted prompt answers should have been consumed; remaining=${stubs.remaining()}`,
+    );
+  });
+
+  // Regression test for issue #391: cosmiconfig v9 lazy-requires parse-json
+  // to load JSON commitlint configs. If parse-json is not bundled correctly,
+  // loadRuleConfigs silently falls back to {} and the custom type-enum is
+  // invisible — the stub would pick the first default type instead of
+  // the JSON-defined type, causing the commit message assertion to fail.
+  test('loads type-enum from a JSON commitlintrc (issue #391 regression)', async function () {
+    this.timeout(60000);
+
+    // Write a .commitlintrc.json that defines a single custom type so we can
+    // unambiguously detect whether cosmiconfig parsed it via parse-json.
+    const commitlintrcPath = path.join(repoPath, '.commitlintrc.json');
+    const jsonConfig = JSON.stringify({
+      rules: {
+        'type-enum': [2, 'always', ['json-fix']],
+      },
+    });
+    fs.writeFileSync(commitlintrcPath, jsonConfig, 'utf8');
+
+    let localCapturedValue: string | undefined;
+
+    try {
+      // Prompt order matches default settings (gitmoji on, scope on, ci off,
+      // body on, footer on, showEditor off):
+      //   1. type     QuickPick  → 'json-fix'  (only present if JSON was parsed)
+      //   2. scope    QuickPick  → ''           (no scope)
+      //   3. gitmoji  QuickPick  → ''           (no gitmoji)
+      //   4. subject  InputBox   → 'json commitlintrc loaded'
+      //   5. body     InputBox   → ''
+      //   6. footer   InputBox   → ''
+      stubs = installPromptStubs([
+        'json-fix',
+        '',
+        '',
+        'json commitlintrc loaded',
+        '',
+        '',
+      ]);
+
+      const trackedFileUri = vscode.Uri.file(path.join(repoPath, 'README.md'));
+      const newContents = Buffer.from(
+        '# E2E mock repo\n\njson-config edit ' + Date.now() + '\n',
+        'utf8',
+      );
+      await vscode.workspace.fs.writeFile(trackedFileUri, newContents);
+      await repository.add([trackedFileUri.fsPath]);
+
+      // Capture inputBox.value with a simple own-property trap on the current
+      // inputBox object (lighter than the full prototype dance in the main test).
+      const inputBoxRef = repository.inputBox as { value: string };
+      const valueOwner: object = ((): object => {
+        let cur: object | null = inputBoxRef;
+        while (cur) {
+          if (Object.prototype.hasOwnProperty.call(cur, 'value')) return cur;
+          cur = Object.getPrototypeOf(cur);
+        }
+        return inputBoxRef;
+      })();
+      const origDescriptor = Object.getOwnPropertyDescriptor(
+        valueOwner,
+        'value',
+      );
+      if (origDescriptor) {
+        const origSet = origDescriptor.set;
+        const origGet = origDescriptor.get;
+        Object.defineProperty(valueOwner, 'value', {
+          configurable: true,
+          enumerable: origDescriptor.enumerable,
+          get() {
+            return origGet ? origGet.call(this) : undefined;
+          },
+          set(next: string) {
+            if (typeof next === 'string' && next !== '') {
+              localCapturedValue = next;
+            }
+            if (origSet) origSet.call(this, next);
+          },
+        });
+      }
+
+      await vscode.commands.executeCommand(COMMAND_ID, repository.rootUri);
+    } finally {
+      fs.unlinkSync(commitlintrcPath);
+    }
+
+    console.log(
+      '[e2e diagnostic] json-config capturedInputBoxValue:',
+      JSON.stringify(localCapturedValue),
+    );
+
+    // The commit message must use the JSON-defined type 'json-fix', proving
+    // cosmiconfig successfully loaded the .commitlintrc.json via parse-json.
+    const expectedMessage = 'json-fix: json commitlintrc loaded';
+    assert.strictEqual(
+      localCapturedValue,
+      expectedMessage,
+      `repository.inputBox.value should be ${JSON.stringify(expectedMessage)} ` +
+        `— if it starts with a default type like 'feat', parse-json was not bundled`,
     );
   });
 });
