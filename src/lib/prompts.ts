@@ -205,7 +205,7 @@ export default async function prompts({
       alwaysShow: true,
     };
 
-    // Use scopes from prompt config if available
+    // Use tag from prompt config if available
     if (tagEnumFromPrompt && Object.keys(tagEnumFromPrompt).length > 0) {
       return {
         type: PROMPT_TYPES.QUICK_PICK,
