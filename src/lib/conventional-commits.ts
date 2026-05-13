@@ -156,6 +156,7 @@ export default function createConventionalCommits() {
         promptBody: configuration.get<boolean>('promptBody'),
         promptFooter: configuration.get<boolean>('promptFooter'),
         promptCI: configuration.get<boolean>('promptCI'),
+        promptTag: configuration.get<boolean>('promptTag'),
         promptConfig: commitlint.getPromptConfig(),
       });
       output.info(`messageJSON:\n${JSON.stringify(commitMessage, null, 2)}`);

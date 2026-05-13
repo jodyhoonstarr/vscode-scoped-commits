@@ -41,6 +41,7 @@ export default async function prompts({
   promptFooter,
   promptCI,
   promptConfig,
+  promptTag,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
@@ -50,6 +51,7 @@ export default async function prompts({
   promptBody: boolean;
   promptFooter: boolean;
   promptCI: boolean;
+  promptTag:boolean;
   promptConfig?: UserPromptConfig;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
@@ -192,6 +194,64 @@ export default async function prompts({
     };
   }
 
+  function getTagPrompt(): Omit<Prompt, 'step' | 'totalSteps'> {
+    const name = 'tag';
+    const placeholder = getPromptLocalize('tag.placeholder');;
+    const tagEnumFromPrompt = promptConfig?.questions?.tag?.enum;
+    const noneItem: Item = {
+      label: getPromptLocalize('tag.noneItem.label'),
+      description: '',
+      detail: getPromptLocalize('tag.noneItem.detail'),
+      alwaysShow: true,
+    };
+
+    // Use scopes from prompt config if available
+    if (tagEnumFromPrompt && Object.keys(tagEnumFromPrompt).length > 0) {
+      return {
+        type: PROMPT_TYPES.QUICK_PICK,
+        name,
+        placeholder,
+        items: Object.entries(tagEnumFromPrompt).map(function ([
+          scope,
+          meta,
+        ]): Item {
+          return {
+            label: scope,
+            description: meta.title || '',
+            detail: meta.description || '',
+          };
+        }),
+        noneItem,
+      };
+    }
+
+    return {
+      type: PROMPT_TYPES.CONFIGURABLE_QUICK_PICK,
+      name,
+      placeholder,
+      configurationKey: keys.TAGS as keyof configuration.Configuration,
+      newItem: {
+        label: getPromptLocalize('tag.newItem.label'),
+        description: '',
+        detail: getPromptLocalize('tag.newItem.detail'),
+        alwaysShow: true,
+        placeholder: getPromptLocalize('tag.newItem.placeholder'),
+      },
+      noneItem,
+      newItemWithoutSetting: {
+        label: getPromptLocalize('tag.newItemWithoutSetting.label'),
+        description: '',
+        detail: getPromptLocalize('tag.newItemWithoutSetting.detail'),
+        alwaysShow: true,
+        placeholder: getPromptLocalize('tag.newItem.placeholder'),
+      },
+      validate(input: string) {
+        return commitlint.lintScope(input);
+      },
+      storeGlobal: configuration.get<boolean>('storeScopesGlobally'),
+    };
+  }
+
   const questions: Prompt[] = [
     {
       type: PROMPT_TYPES.QUICK_PICK,
@@ -203,6 +263,7 @@ export default async function prompts({
       },
     },
     getScopePrompt(),
+    getTagPrompt(),
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'gitmoji',
@@ -246,7 +307,7 @@ export default async function prompts({
         promptConfig?.questions?.subject?.description ||
         getPromptLocalize('subject.placeholder'),
       validate(input: string) {
-        const { type, scope, gitmoji, ci } = commitMessage;
+        const { type, scope, gitmoji, ci, tag } = commitMessage;
         const serializedSubject = serializeSubject({
           gitmoji,
           subject: input,
@@ -270,6 +331,7 @@ export default async function prompts({
             gitmoji,
             subject: input,
             ci,
+            tag
           }),
         );
         if (headerError) {

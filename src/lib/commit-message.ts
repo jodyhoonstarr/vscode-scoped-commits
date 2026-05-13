@@ -1,3 +1,5 @@
+import { S } from "vitest/dist/chunks/browser.d.BcoexmFG";
+
 /**
  * @since 2020-07-06 23:02
  * @author vivaxy
@@ -10,6 +12,7 @@ export class CommitMessage {
   private _body: string = '';
   private _footer: string = '';
   private _ci: string = '';
+  private _tag: string = '';
 
   get type() {
     return this._type;
@@ -66,6 +69,14 @@ export class CommitMessage {
   set ci(input: string) {
     this._ci = input.trim();
   }
+
+  get tag() {
+    return this._tag
+  }
+
+  set tag(input:string){
+    this._tag = input.trim()
+  }
 }
 
 export function serializeSubject(partialCommitMessage: {
@@ -92,10 +103,11 @@ export function serializeHeader(partialCommitMessage: {
   scope: string;
   gitmoji: string;
   subject: string;
+  tag:string;
 }) {
   let result = '';
   result += partialCommitMessage.type;
-  const { scope, ci } = partialCommitMessage;
+  const { scope, ci, tag } = partialCommitMessage;
   if (scope) {
     result += `(${scope})`;
   }
@@ -103,6 +115,9 @@ export function serializeHeader(partialCommitMessage: {
   const subject = serializeSubject(partialCommitMessage);
   if (subject) {
     result += subject;
+  }
+  if(tag) {
+    result+=` ${tag}`
   }
   if (ci === 'Yes') {
     result += ' [skip ci]';
