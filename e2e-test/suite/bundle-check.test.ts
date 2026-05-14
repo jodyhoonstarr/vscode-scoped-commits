@@ -77,34 +77,39 @@ suite('bundle sanity checks', () => {
     );
   });
 
-  // Regression test for issue #395: jiti/lib/jiti.cjs calls
-  // `require("node:module")` to obtain `createRequire`. webpack must NOT
-  // inline node:module as an empty stub — instead the string-replace-loader
-  // rule in webpack.config.js rewrites the call to
-  // `__non_webpack_require__("node:module")` so Node resolves the real
-  // built-in at runtime. Without this patch, `createRequire` is undefined and
-  // cosmiconfig-typescript-loader throws
-  // `TypeError: i.createRequire is not a function` for any workspace that
-  // contains a TypeScript commitlint config.
-  test('dist/extension.js does not contain bare require("node:module") in jiti.cjs context (issue #395 regression)', () => {
+  // Regression test for issue #395: jiti/lib/jiti.mjs and jiti/lib/jiti.cjs
+  // both call into node:module to obtain `createRequire`. Without the
+  // string-replace-loader patches in webpack.config.js, webpack either drops
+  // the ESM import (leaving createRequire undefined) or bundles node:module as
+  // an empty stub. Either way `createJiti` receives createRequire: undefined
+  // and cosmiconfig-typescript-loader throws
+  // `TypeError: i.createRequire is not a function` for TypeScript commitlint configs.
+  //
+  // The fix patches both jiti entries to use __non_webpack_require__("node:module"),
+  // which webpack emits as `require("node:module")` resolved via the
+  // "node:module" external entry — i.e. `module.exports = require("node:module")`.
+  // The correct signal is therefore that "node:module" IS present as a webpack
+  // external, and that createRequire is not undefined in createJiti's call.
+  test('dist/extension.js externalises node:module and passes createRequire to createJiti (issue #395 regression)', () => {
     const source = fs.readFileSync(bundlePath, 'utf8');
 
-    // The patched line `const { createRequire } = require("node:module");`
-    // must not survive into the bundle verbatim.  After patching,
-    // `__non_webpack_require__("node:module")` is emitted instead, which
-    // webpack externalises as the real Node built-in.
-    const unpatched =
-      /const\s*\{\s*createRequire\s*\}\s*=\s*require\(["']node:module["']\)/.test(
-        source,
-      );
-    assert.strictEqual(
-      unpatched,
-      false,
-      `dist/extension.js must not contain the unpatched ` +
-        `\`const { createRequire } = require("node:module")\` from jiti.cjs — ` +
-        `it means the string-replace-loader rule for jiti/lib/jiti.cjs in ` +
-        `webpack.config.js no longer matches (issue #395). ` +
-        `Check that the search string still matches the current jiti version.`,
+    // 1. node:module must be present as a webpack external so that
+    //    require("node:module") resolves to the real Node built-in at runtime.
+    assert.ok(
+      source.includes('!*** external "node:module" ***!'),
+      `dist/extension.js must contain a webpack external for "node:module" — ` +
+        `without it, require("node:module") resolves to an empty stub and ` +
+        `createRequire is undefined (issue #395).`,
+    );
+
+    // 2. createJiti must not receive `createRequire: undefined`. After patching,
+    //    the jiti.mjs module passes the variable `createRequire` (obtained from
+    //    node:module) rather than the literal `undefined`.
+    assert.ok(
+      !source.includes('/* createRequire */ undefined'),
+      `dist/extension.js must not contain \`/* createRequire */ undefined\` — ` +
+        `this indicates the import { createRequire } from "node:module" in jiti.mjs ` +
+        `was dropped by webpack and the string-replace-loader patch is missing (issue #395).`,
     );
   });
 });
