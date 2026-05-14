@@ -45,3 +45,14 @@ test('should load YAML config (exercises cosmiconfig js-yaml)', async function (
   );
   expect(commitlint.getTypeEnum()).toStrictEqual(['yaml-type']);
 });
+
+// Regression test for issue #395: jiti.cjs passes createRequire from node:module
+// to _createJiti; webpack must not bundle node:module as a stub (TypeError: i.createRequire
+// is not a function). Vitest runs un-bundled source, exercising the real jiti.cjs →
+// node:module → createRequire chain directly.
+test('should load TypeScript config (regression for issue #395 / jiti.cjs createRequire)', async function () {
+  await commitlint.loadRuleConfigs(
+    path.join(fixtureRootPath, 'should-load-ts-config'),
+  );
+  expect(commitlint.getTypeEnum()).toStrictEqual(['ts-type']);
+});

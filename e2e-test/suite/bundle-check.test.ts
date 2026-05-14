@@ -76,4 +76,35 @@ suite('bundle sanity checks', () => {
         `Check the cosmiconfig string-replace-loader rule in webpack.config.js.`,
     );
   });
+
+  // Regression test for issue #395: jiti/lib/jiti.cjs calls
+  // `require("node:module")` to obtain `createRequire`. webpack must NOT
+  // inline node:module as an empty stub — instead the string-replace-loader
+  // rule in webpack.config.js rewrites the call to
+  // `__non_webpack_require__("node:module")` so Node resolves the real
+  // built-in at runtime. Without this patch, `createRequire` is undefined and
+  // cosmiconfig-typescript-loader throws
+  // `TypeError: i.createRequire is not a function` for any workspace that
+  // contains a TypeScript commitlint config.
+  test('dist/extension.js does not contain bare require("node:module") in jiti.cjs context (issue #395 regression)', () => {
+    const source = fs.readFileSync(bundlePath, 'utf8');
+
+    // The patched line `const { createRequire } = require("node:module");`
+    // must not survive into the bundle verbatim.  After patching,
+    // `__non_webpack_require__("node:module")` is emitted instead, which
+    // webpack externalises as the real Node built-in.
+    const unpatched =
+      /const\s*\{\s*createRequire\s*\}\s*=\s*require\(["']node:module["']\)/.test(
+        source,
+      );
+    assert.strictEqual(
+      unpatched,
+      false,
+      `dist/extension.js must not contain the unpatched ` +
+        `\`const { createRequire } = require("node:module")\` from jiti.cjs — ` +
+        `it means the string-replace-loader rule for jiti/lib/jiti.cjs in ` +
+        `webpack.config.js no longer matches (issue #395). ` +
+        `Check that the search string still matches the current jiti version.`,
+    );
+  });
 });

@@ -195,6 +195,23 @@ const config = {
           strict: true,
         },
       },
+      // jiti/lib/jiti.cjs is the CJS entry reached via
+      // cosmiconfig-typescript-loader → require("jiti"). It calls
+      // require("node:module") to obtain createRequire, but node:module is not
+      // externalized in webpack, so it would be bundled as an empty stub and
+      // createRequire would be undefined at runtime. Rewrite the call to
+      // __non_webpack_require__ so Node resolves the real built-in at runtime.
+      {
+        enforce: 'pre',
+        test: /jiti[\/\\]lib[\/\\]jiti\.cjs/,
+        loader: 'string-replace-loader',
+        options: {
+          search: 'const { createRequire } = require("node:module");',
+          replace:
+            'const { createRequire } = __non_webpack_require__("node:module");',
+          strict: true,
+        },
+      },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
