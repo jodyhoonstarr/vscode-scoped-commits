@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.28.3](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.2...v1.28.3) (2026-05-14)
+
+### Bug Fixes
+
+- **bundle:** patch jiti.mjs createRequire and fix e2e tests ([f16e685](https://github.com/vivaxy/vscode-conventional-commits/commit/f16e685dbf734443738e5715be125a00eb528805)), closes [#391](https://github.com/vivaxy/vscode-conventional-commits/issues/391)
+- **bundle:** patch jiti/lib/jiti.cjs to fix createRequire not a function ([#395](https://github.com/vivaxy/vscode-conventional-commits/issues/395)) ([8bbe56e](https://github.com/vivaxy/vscode-conventional-commits/commit/8bbe56e00eb0c97e0f14642916710feb02b7b5cb))
+
 ## [1.28.2](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.1...v1.28.2) (2026-05-12)
 
 ### Bug Fixes
