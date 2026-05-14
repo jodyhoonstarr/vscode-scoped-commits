@@ -1,5 +1,3 @@
-import { S } from "vitest/dist/chunks/browser.d.BcoexmFG";
-
 /**
  * @since 2020-07-06 23:02
  * @author vivaxy
