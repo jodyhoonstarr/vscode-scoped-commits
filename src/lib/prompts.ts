@@ -51,7 +51,7 @@ export default async function prompts({
   promptBody: boolean;
   promptFooter: boolean;
   promptCI: boolean;
-  promptTag:boolean;
+  promptTag: boolean;
   promptConfig?: UserPromptConfig;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
@@ -196,7 +196,7 @@ export default async function prompts({
 
   function getTagPrompt(): Omit<Prompt, 'step' | 'totalSteps'> {
     const name = 'tag';
-    const placeholder = getPromptLocalize('tag.placeholder');;
+    const placeholder = getPromptLocalize('tag.placeholder');
     const tagEnumFromPrompt = promptConfig?.questions?.tag?.enum;
     const noneItem: Item = {
       label: getPromptLocalize('tag.noneItem.label'),
@@ -331,7 +331,7 @@ export default async function prompts({
             gitmoji,
             subject: input,
             ci,
-            tag
+            tag,
           }),
         );
         if (headerError) {

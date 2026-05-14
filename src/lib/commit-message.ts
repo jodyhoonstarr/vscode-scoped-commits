@@ -69,11 +69,11 @@ export class CommitMessage {
   }
 
   get tag() {
-    return this._tag
+    return this._tag;
   }
 
-  set tag(input:string){
-    this._tag = input.trim()
+  set tag(input: string) {
+    this._tag = input.trim();
   }
 }
 
@@ -101,7 +101,7 @@ export function serializeHeader(partialCommitMessage: {
   scope: string;
   gitmoji: string;
   subject: string;
-  tag:string;
+  tag: string;
 }) {
   let result = '';
   result += partialCommitMessage.type;
@@ -114,8 +114,8 @@ export function serializeHeader(partialCommitMessage: {
   if (subject) {
     result += subject;
   }
-  if(tag) {
-    result+=` ${tag}`
+  if (tag) {
+    result += ` ${tag}`;
   }
   if (ci === 'Yes') {
     result += ' [skip ci]';
