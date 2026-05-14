@@ -245,9 +245,6 @@ export default async function prompts({
         alwaysShow: true,
         placeholder: getPromptLocalize('tag.newItem.placeholder'),
       },
-      validate(input: string) {
-        return commitlint.lintScope(input);
-      },
       storeGlobal: configuration.get<boolean>('storeScopesGlobally'),
     };
   }
@@ -382,6 +379,8 @@ export default async function prompts({
   ]
     .filter(function (question) {
       if (question.name === 'scope' && !promptScopes) return false;
+      
+      if (question.name === 'tag' && !promptTag) return false;
 
       if (question.name === 'gitmoji' && !gitmoji) return false;
 
