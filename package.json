@@ -133,7 +133,7 @@
         },
         "conventionalCommits.promptTag": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "markdownDescription": "%extension.configuration.promptTag.markdownDescription%"
         },
         "conventionalCommits.tags": {
