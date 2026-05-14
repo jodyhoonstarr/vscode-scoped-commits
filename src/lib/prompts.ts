@@ -263,7 +263,6 @@ export default async function prompts({
       },
     },
     getScopePrompt(),
-    getTagPrompt(),
     {
       type: PROMPT_TYPES.QUICK_PICK,
       name: 'gitmoji',
@@ -357,6 +356,7 @@ export default async function prompts({
       },
       format: lineBreakFormatter,
     },
+    getTagPrompt(),
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
