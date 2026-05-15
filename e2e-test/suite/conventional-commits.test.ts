@@ -504,4 +504,105 @@ suite('extension.conventionalCommits e2e', () => {
         `— if it starts with a default type like 'feat', parse-json was not bundled`,
     );
   });
+
+  // Regression test for issue #395: cosmiconfig-typescript-loader calls
+  // require("jiti") which resolves to jiti/lib/jiti.cjs. That file uses
+  // `require("node:module")` to obtain `createRequire`. Without the
+  // string-replace-loader patch in webpack.config.js, webpack stubs out
+  // node:module and `createRequire` is undefined, causing
+  // `TypeError: i.createRequire is not a function` before the prompt opens.
+  test('loads type-enum from a TypeScript commitlintrc (issue #395 regression)', async function () {
+    this.timeout(60000);
+
+    // Write a .commitlintrc.ts that defines a single custom type so we can
+    // unambiguously detect whether cosmiconfig parsed it via jiti.
+    const commitlintrcPath = path.join(repoPath, '.commitlintrc.ts');
+    fs.writeFileSync(
+      commitlintrcPath,
+      `export default { rules: { 'type-enum': [2, 'always', ['ts-fix']] } };\n`,
+      'utf8',
+    );
+
+    let localCapturedValue: string | undefined;
+
+    try {
+      // Prompt order matches default settings (gitmoji on, scope on, ci off,
+      // body on, footer on, showEditor off):
+      //   1. type     QuickPick  → 'ts-fix'  (only present if TS was parsed)
+      //   2. scope    QuickPick  → ''         (no scope)
+      //   3. gitmoji  QuickPick  → ''         (no gitmoji)
+      //   4. subject  InputBox   → 'ts commitlintrc loaded'
+      //   5. body     InputBox   → ''
+      //   6. footer   InputBox   → ''
+      stubs = installPromptStubs([
+        'ts-fix',
+        '',
+        '',
+        'ts commitlintrc loaded',
+        '',
+        '',
+      ]);
+
+      const trackedFileUri = vscode.Uri.file(path.join(repoPath, 'README.md'));
+      const newContents = Buffer.from(
+        '# E2E mock repo\n\nts-config edit ' + Date.now() + '\n',
+        'utf8',
+      );
+      await vscode.workspace.fs.writeFile(trackedFileUri, newContents);
+      await repository.add([trackedFileUri.fsPath]);
+
+      const inputBoxRef = repository.inputBox as { value: string };
+      const valueOwner: object = ((): object => {
+        let cur: object | null = inputBoxRef;
+        while (cur) {
+          if (Object.prototype.hasOwnProperty.call(cur, 'value')) return cur;
+          cur = Object.getPrototypeOf(cur);
+        }
+        return inputBoxRef;
+      })();
+      const origDescriptor = Object.getOwnPropertyDescriptor(
+        valueOwner,
+        'value',
+      );
+      if (origDescriptor) {
+        const origSet = origDescriptor.set;
+        const origGet = origDescriptor.get;
+        Object.defineProperty(valueOwner, 'value', {
+          configurable: true,
+          enumerable: origDescriptor.enumerable,
+          get() {
+            return origGet ? origGet.call(this) : undefined;
+          },
+          set(next: string) {
+            if (typeof next === 'string' && next !== '') {
+              localCapturedValue = next;
+            }
+            if (origSet) origSet.call(this, next);
+          },
+        });
+      }
+
+      await vscode.commands.executeCommand(COMMAND_ID, repository.rootUri);
+    } finally {
+      fs.unlinkSync(commitlintrcPath);
+    }
+
+    console.log(
+      '[e2e diagnostic] ts-config capturedInputBoxValue:',
+      JSON.stringify(localCapturedValue),
+    );
+
+    // The commit message must use the TS-defined type 'ts-fix', proving
+    // cosmiconfig-typescript-loader + jiti.cjs + createRequire all worked.
+    // If this throws "TypeError: i.createRequire is not a function" the
+    // string-replace-loader patch for jiti.cjs in webpack.config.js is missing.
+    const expectedMessage = 'ts-fix: ts commitlintrc loaded';
+    assert.strictEqual(
+      localCapturedValue,
+      expectedMessage,
+      `repository.inputBox.value should be ${JSON.stringify(expectedMessage)} ` +
+        `— if undefined, jiti.cjs threw createRequire is not a function (issue #395); ` +
+        `if it starts with a default type like 'feat', the TS config was not parsed`,
+    );
+  });
 });

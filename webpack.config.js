@@ -180,18 +180,48 @@ const config = {
           ],
         },
       },
-      // jiti (transitively pulled in by cosmiconfig-typescript-loader) does a
-      // dynamic `import(id)` whose argument webpack cannot resolve
-      // statically. We do not actually run TypeScript-authored commitlint
-      // configs through this code path in the bundle, but webpack still
-      // refuses to compile until the call is opaque to its analyser.
+      // jiti/lib/jiti.mjs is the ESM entry used by cosmiconfig-typescript-loader
+      // (imported as `import { createJiti } from "jiti"`). Two patches are needed:
+      // 1. `import { createRequire } from "node:module"` — webpack drops this
+      //    harmony import when bundling to CJS, leaving createRequire undefined.
+      //    Replace with a CJS-style __non_webpack_require__ call.
+      // 2. `const nativeImport = (id) => import(id)` — webpack cannot statically
+      //    resolve the dynamic import argument; redirect to __non_webpack_require__.
       {
         enforce: 'pre',
         test: /jiti[\/\\]lib[\/\\]jiti\.mjs/,
         loader: 'string-replace-loader',
         options: {
-          search: 'const nativeImport = (id) => import(id);',
-          replace: 'const nativeImport = (id) => __non_webpack_require__(id);',
+          multiple: [
+            {
+              search: 'import { createRequire } from "node:module";',
+              replace:
+                'const { createRequire } = __non_webpack_require__("node:module");',
+              strict: true,
+            },
+            {
+              search: 'const nativeImport = (id) => import(id);',
+              replace:
+                'const nativeImport = (id) => __non_webpack_require__(id);',
+              strict: true,
+            },
+          ],
+        },
+      },
+      // jiti/lib/jiti.cjs is the CJS entry reached via
+      // cosmiconfig-typescript-loader → require("jiti"). It calls
+      // require("node:module") to obtain createRequire, but node:module is not
+      // externalized in webpack, so it would be bundled as an empty stub and
+      // createRequire would be undefined at runtime. Rewrite the call to
+      // __non_webpack_require__ so Node resolves the real built-in at runtime.
+      {
+        enforce: 'pre',
+        test: /jiti[\/\\]lib[\/\\]jiti\.cjs/,
+        loader: 'string-replace-loader',
+        options: {
+          search: 'const { createRequire } = require("node:module");',
+          replace:
+            'const { createRequire } = __non_webpack_require__("node:module");',
           strict: true,
         },
       },
