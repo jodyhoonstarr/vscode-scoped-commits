@@ -296,6 +296,7 @@ export default async function prompts({
         alwaysShow: true,
       },
     },
+    getTagPrompt(),
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'subject',
@@ -353,7 +354,6 @@ export default async function prompts({
       },
       format: lineBreakFormatter,
     },
-    getTagPrompt(),
     {
       type: PROMPT_TYPES.INPUT_BOX,
       name: 'body',
