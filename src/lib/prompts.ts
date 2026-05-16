@@ -197,33 +197,12 @@ export default async function prompts({
   function getTagPrompt(): Omit<Prompt, 'step' | 'totalSteps'> {
     const name = 'tag';
     const placeholder = getPromptLocalize('tag.placeholder');
-    const tagEnumFromPrompt = promptConfig?.questions?.tag?.enum;
     const noneItem: Item = {
       label: getPromptLocalize('tag.noneItem.label'),
       description: '',
       detail: getPromptLocalize('tag.noneItem.detail'),
       alwaysShow: true,
     };
-
-    // Use tag from prompt config if available
-    if (tagEnumFromPrompt && Object.keys(tagEnumFromPrompt).length > 0) {
-      return {
-        type: PROMPT_TYPES.QUICK_PICK,
-        name,
-        placeholder,
-        items: Object.entries(tagEnumFromPrompt).map(function ([
-          scope,
-          meta,
-        ]): Item {
-          return {
-            label: scope,
-            description: meta.title || '',
-            detail: meta.description || '',
-          };
-        }),
-        noneItem,
-      };
-    }
 
     return {
       type: PROMPT_TYPES.CONFIGURABLE_QUICK_PICK,
