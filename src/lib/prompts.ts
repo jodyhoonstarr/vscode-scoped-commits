@@ -245,7 +245,7 @@ export default async function prompts({
         alwaysShow: true,
         placeholder: getPromptLocalize('tag.newItem.placeholder'),
       },
-      storeGlobal: configuration.get<boolean>('storeScopesGlobally'),
+      storeGlobal: configuration.get<boolean>('storeTagsGlobally'),
     };
   }
 

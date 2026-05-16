@@ -27,6 +27,7 @@ export type Configuration = {
   showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
   storeScopesGlobally: boolean;
+  storeTagsGlobally: boolean;
 };
 
 export function getConfiguration() {

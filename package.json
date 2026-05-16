@@ -78,6 +78,11 @@
           "default": false,
           "markdownDescription": "%extension.configuration.storeScopesGlobally.markdownDescription%"
         },
+        "conventionalCommits.storeTagsGlobally": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%extension.configuration.storeTagsGlobally.markdownDescription%"
+        },
         "conventionalCommits.silentAutoCommit": {
           "type": "boolean",
           "default": false,

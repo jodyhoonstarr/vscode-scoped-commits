@@ -4,6 +4,7 @@
   "extension.commands.showNewVersionNotes": "Kurallı Commit'ler: Sürüm Notlarını Göster",
   "extension.configuration.autoCommit.markdownDescription": "Eklentinin, mesaj oluşturulduktan veya editör sekmesi kapatıldıktan sonra dosyaları commit edip etmeyeceğini kontrol eder.\n\n`#git.enableSmartCommit#` etkinleştirildiğinde ve `#git.smartCommitChanges#` `all` olarak ayarlandığında, hazırlanmış (staged) değişiklik olmadığında tüm değişikliklerin commit edilmesine olanak tanır.\n\nCommit işleminden sonra `git.sync` komutunu çalıştırmak için `#git.postCommitCommand#` ayarını `sync` olarak ayarlayın.",
   "extension.configuration.storeScopesGlobally.markdownDescription": "Eklentinin, tanımlanan kapsamları çalışma alanı ayarlarınızda mı yoksa kullanıcı ayarlarınızda mı saklayacağını kontrol eder.",
+  "extension.configuration.storeTagsGlobally.markdownDescription": "Eklentinin, Etiketler çalışma alanı ayarlarınızda mı yoksa kullanıcı ayarlarınızda mı saklayacağını kontrol eder.",
   "extension.configuration.silentAutoCommit.markdownDescription": "Otomatik commit işleminin, kaynak kontrol paneline odaklanmadan sessizce yapılıp yapılmayacağını kontrol eder.",
   "extension.configuration.emojiFormat.markdownDescription": "`gitmoji` isteminde hangi formatın gösterileceğini belirtir.",
   "extension.configuration.emojiFormat.markdownEnumDescriptions.code": "`:bug:` olarak gösterilir",
