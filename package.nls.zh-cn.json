@@ -33,7 +33,7 @@
   "extension.sources.prompt.tag.newItem.label": "新的 tag",
   "extension.sources.prompt.tag.newItem.detail": "添加新的 tag（将持久保存）。可在工作区 `settings.json` 中管理。",
   "extension.sources.prompt.tag.newItem.placeholder": "新建 tag。",
-  "extension.sources.prompt.tag.newItemWithoutSetting.label": "New tag (仅使用一次)",
+  "extension.sources.prompt.tag.newItemWithoutSetting.label": "新的 tag（仅使用一次）",
   "extension.sources.prompt.tag.newItemWithoutSetting.detail": "使用新的 tag（不会持久保存至用户或工作区 `settings.json`）。",
   "extension.sources.prompt.scope.placeholder": "请选择作用域。",
   "extension.sources.prompt.scope.noneItem.label": "无",
