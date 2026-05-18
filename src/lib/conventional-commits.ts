@@ -148,14 +148,14 @@ export default function createConventionalCommits() {
       const commitMessage = await prompts({
         gitmoji: configuration.get<boolean>('gitmoji'),
         showEditor: configuration.get<boolean>('showEditor'),
-        emojiFormat: configuration.get<configuration.EMOJI_FORMAT>(
-          'emojiFormat',
-        ),
+        emojiFormat:
+          configuration.get<configuration.EMOJI_FORMAT>('emojiFormat'),
         lineBreak: configuration.get<string>('lineBreak'),
         promptScopes: configuration.get<boolean>('promptScopes'),
         promptBody: configuration.get<boolean>('promptBody'),
         promptFooter: configuration.get<boolean>('promptFooter'),
         promptCI: configuration.get<boolean>('promptCI'),
+        promptTag: configuration.get<boolean>('promptTag'),
         promptConfig: commitlint.getPromptConfig(),
       });
       output.info(`messageJSON:\n${JSON.stringify(commitMessage, null, 2)}`);

@@ -17,14 +17,17 @@ export type Configuration = {
   emojiFormat: EMOJI_FORMAT;
   showEditor: boolean;
   scopes: string[];
+  tags: string[];
   lineBreak: string;
   promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
   promptCI: boolean;
+  promptTag: boolean;
   showNewVersionNotes: boolean;
   'editor.keepAfterSave': boolean;
   storeScopesGlobally: boolean;
+  storeTagsGlobally: boolean;
 };
 
 export function getConfiguration() {

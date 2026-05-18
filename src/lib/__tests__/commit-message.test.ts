@@ -82,6 +82,7 @@ test('serializeHeader renders type-only header', function () {
       scope: '',
       gitmoji: '',
       subject: '',
+      tag: '',
     }),
   ).toBe('feat: ');
 });
@@ -94,6 +95,7 @@ test('serializeHeader renders type and scope', function () {
       scope: 'scope',
       gitmoji: '',
       subject: '',
+      tag: '',
     }),
   ).toBe('feat(scope): ');
 });
@@ -106,6 +108,7 @@ test('serializeHeader renders type, scope, gitmoji, and subject', function () {
       scope: 'scope',
       gitmoji: ':sparkles:',
       subject: 'add login',
+      tag: '',
     }),
   ).toBe('feat(scope): :sparkles: add login');
 });
@@ -118,8 +121,35 @@ test('serializeHeader appends [skip ci] when ci is Yes', function () {
       scope: 'scope',
       gitmoji: ':sparkles:',
       subject: 'add login',
+      tag: '',
     }),
   ).toBe('feat(scope): :sparkles: add login [skip ci]');
+});
+
+test('serializeHeader render tag', function () {
+  expect(
+    serializeHeader({
+      ci: '',
+      type: 'feat',
+      scope: 'scope',
+      gitmoji: ':sparkles:',
+      subject: 'add login',
+      tag: '[release]',
+    }),
+  ).toBe('feat(scope): :sparkles: add login [release]');
+});
+
+test('serializeHeader render tag and appends [skip ci] when ci is Yes', function () {
+  expect(
+    serializeHeader({
+      ci: 'Yes',
+      type: 'feat',
+      scope: 'scope',
+      gitmoji: ':sparkles:',
+      subject: 'add login',
+      tag: '[release]',
+    }),
+  ).toBe('feat(scope): :sparkles: add login [release] [skip ci]');
 });
 
 test('serialize renders header-only message', function () {
