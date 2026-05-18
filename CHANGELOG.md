@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.29.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.3...v1.29.0) (2026-05-18)
+
+### Features
+
+- add Turkish and Chinese (Simplified) for tag keys ([95c47cc](https://github.com/vivaxy/vscode-conventional-commits/commit/95c47cc90da240166490aa1ec66bf6e6831af355))
+- **commit tag:** add the ability to add additional tags ([c1a81ce](https://github.com/vivaxy/vscode-conventional-commits/commit/c1a81cef3c2f4837a503c9a7d3acda0498920b46))
+- **readme:** update readme ([03d4c6a](https://github.com/vivaxy/vscode-conventional-commits/commit/03d4c6ad5f98bed93ea788f432ab89c6ce84cc08))
+- **tags:** fix typing ([6a018e5](https://github.com/vivaxy/vscode-conventional-commits/commit/6a018e5f4773faaa14d293b6e5c8feeffea996f7))
+
+### Bug Fixes
+
+- **code:** remove unnecessary import ([9643f6e](https://github.com/vivaxy/vscode-conventional-commits/commit/9643f6ee5bc6ab9b49033d6232ad7d7c666c5de1))
+- **locale:** translate ([cb3ae40](https://github.com/vivaxy/vscode-conventional-commits/commit/cb3ae40ab675c8412feae39db6484b3ccc22b0ac))
+- **prompts:** remove tagEnumFromPrompt ([9881504](https://github.com/vivaxy/vscode-conventional-commits/commit/98815044510698e5688ec9919a56822e369537b0))
+- **prompts:** reorder prompts ([ced4719](https://github.com/vivaxy/vscode-conventional-commits/commit/ced4719dcfb7c8fd666f1273c2d601352a617c7c))
+- **prompts:** reorder prompts ([64d7991](https://github.com/vivaxy/vscode-conventional-commits/commit/64d7991729b1831849649faa02e5ea2571ff9740))
+- **prompts:** use promptTag flag and remove validation ([940aaa3](https://github.com/vivaxy/vscode-conventional-commits/commit/940aaa31586345f6c88c5d15a9da11a2ec21855a))
+- **settings:** add storeTagsGlobally ([e16f88a](https://github.com/vivaxy/vscode-conventional-commits/commit/e16f88a15d84d8275d12d6152d18a46975b37556))
+
 ## [1.28.3](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.2...v1.28.3) (2026-05-14)
 
 ### Bug Fixes
