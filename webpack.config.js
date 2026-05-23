@@ -107,13 +107,19 @@ const config = {
         options: {
           multiple: [
             {
+              search: 'import { createRequire } from "node:module";',
+              replace:
+                'const { createRequire } = __non_webpack_require__("node:module");',
+              strict: true,
+            },
+            {
               search: 'const require = createRequire(import.meta.url);',
               replace: '',
               strict: true,
             },
             {
-              search: '        : import.meta.url);',
-              replace: '        : pathToFileURL(__filename));',
+              search: '        : fileURLToPath(import.meta.url);',
+              replace: '        : __filename;',
               strict: true,
             },
             {
@@ -231,10 +237,20 @@ const config = {
         test: /jiti[\/\\]lib[\/\\]jiti\.cjs/,
         loader: 'string-replace-loader',
         options: {
-          search: 'const { createRequire } = require("node:module");',
-          replace:
-            'const { createRequire } = __non_webpack_require__("node:module");',
-          strict: true,
+          multiple: [
+            {
+              search: 'const { createRequire } = require("node:module");',
+              replace:
+                'const { createRequire } = __non_webpack_require__("node:module");',
+              strict: true,
+            },
+            {
+              search: 'const nativeImport = (id) => import(id);',
+              replace:
+                'const nativeImport = (id) => __non_webpack_require__(id);',
+              strict: true,
+            },
+          ],
         },
       },
       {
