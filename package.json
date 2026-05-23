@@ -165,6 +165,7 @@
     }
   },
   "scripts": {
+    "dev": "node scripts/dev-vscode.js",
     "vscode:prepublish": "webpack --mode production",
     "webpack": "webpack --mode development",
     "webpack-dev": "webpack --mode development --watch",
