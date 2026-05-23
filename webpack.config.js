@@ -40,10 +40,21 @@ const config = {
       // `require(...)` / `require.resolve(...)` / dynamic `import(...)` call
       // sites — that is "correct" by webpack's contract but wrong for our
       // bundle, where the path is determined at runtime by the user's
-      // workspace config. The patches below rewrite those call sites to
-      // `__non_webpack_require__` (webpack's escape hatch that emits a real
-      // Node require) so resolution happens against the user's actual
-      // node_modules at runtime.
+      // workspace config. The patches below:
+      //
+      // 1. rewrite `require(...)` sites to `__non_webpack_require__` so plain
+      //    CommonJS runtime resolution happens against the user's real
+      //    node_modules; and
+      // 2. rewrite dynamic `import(...)` sites to a Function-wrapped runtime
+      //    import helper so webpack does not statically bundle user workspace
+      //    modules, while preserving ESM semantics for `file://...` URLs.
+      //
+      // That second point matters for issue #401: commitlint resolves extended
+      // configs/plugins to absolute paths and then converts those paths to
+      // `file://...` URLs before importing them. `import(fileUrl)` works, but
+      // `require(fileUrl)` does not, so routing those imports through
+      // __non_webpack_require__ breaks Windows (and any other runtime that
+      // receives a file URL).
       {
         enforce: 'pre',
         test: /@commitlint[\/\\]load[\/\\]lib[\/\\]utils[\/\\]load-plugin\.js/,
@@ -65,7 +76,7 @@ const config = {
               search:
                 'const imported = await import(path.isAbsolute(id) ? pathToFileURL(id).toString() : id);',
               replace:
-                'const imported = await __non_webpack_require__(path.isAbsolute(id) ? pathToFileURL(id).toString() : id);',
+                'const imported = await new Function("id", "return import(id)")(path.isAbsolute(id) ? pathToFileURL(id).toString() : id);',
               strict: true,
             },
             {
@@ -114,7 +125,7 @@ const config = {
               search:
                 'const imported = await import(path.isAbsolute(id) ? pathToFileURL(id).toString() : id);',
               replace:
-                'const imported = await __non_webpack_require__(path.isAbsolute(id) ? pathToFileURL(id).toString() : id);',
+                'const imported = await new Function("id", "return import(id)")(path.isAbsolute(id) ? pathToFileURL(id).toString() : id);',
               strict: true,
             },
             {
@@ -142,7 +153,8 @@ const config = {
           multiple: [
             {
               search: 'return (await import(href)).default;',
-              replace: 'return (await __non_webpack_require__(href)).default;',
+              replace:
+                'return (await new Function("id", "return import(id)")(href)).default;',
               strict: true,
             },
             {

@@ -15,6 +15,7 @@ vi.mock('../output', function () {
 });
 
 const fixtureRootPath = path.join(__dirname, 'fixtures');
+const repoRootPath = path.resolve(__dirname, '..', '..', '..');
 
 test('should load commitlint@v17.8.1', async function () {
   await commitlint.loadRuleConfigs(
@@ -28,6 +29,23 @@ test('should load commitlint@v19.3.1', async function () {
     path.join(fixtureRootPath, 'should-load-commitlint@v19.2.2'),
   );
   expect(commitlint.getTypeEnum()).toStrictEqual(['bar']);
+});
+
+test('should load @commitlint/config-conventional from the repo root config', async function () {
+  await commitlint.loadRuleConfigs(repoRootPath);
+  expect(commitlint.getTypeEnum()).toStrictEqual([
+    'build',
+    'chore',
+    'ci',
+    'docs',
+    'feat',
+    'fix',
+    'perf',
+    'refactor',
+    'revert',
+    'style',
+    'test',
+  ]);
 });
 
 // Regression tests for issue #391: cosmiconfig v9 lazy-requires parse-json and

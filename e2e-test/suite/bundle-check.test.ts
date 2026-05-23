@@ -77,6 +77,32 @@ suite('bundle sanity checks', () => {
     );
   });
 
+  // Regression test for issue #401: commitlint resolves extended configs and
+  // plugins to absolute paths, then converts them to `file://...` URLs before
+  // loading them via dynamic import. Our bundle must preserve runtime import
+  // semantics for those URLs. If webpack.config.js rewrites that path to
+  // __non_webpack_require__(fileUrl), Node throws
+  // `Cannot find module 'file:///.../node_modules/@commitlint/config-conventional/lib/index.js'`.
+  test('dist/extension.js does not rewrite file:// dynamic imports to __non_webpack_require__ (issue #401 regression)', () => {
+    const source = fs.readFileSync(bundlePath, 'utf8');
+
+    assert.ok(
+      !source.includes(
+        '__non_webpack_require__(path.isAbsolute(id) ? pathToFileURL(id).toString() : id)',
+      ),
+      `dist/extension.js must not route commitlint file:// dynamic imports ` +
+        `through __non_webpack_require__ — Node require() cannot load file URLs ` +
+        `(issue #401). Check the @commitlint/load and ` +
+        `@commitlint/resolve-extends string-replace-loader rules in webpack.config.js.`,
+    );
+
+    assert.ok(
+      source.includes('new Function("id", "return import(id)")'),
+      `dist/extension.js must preserve a runtime dynamic import helper for ` +
+        `commitlint/cosmiconfig file:// loads (issue #401).`,
+    );
+  });
+
   // Regression test for issue #395: jiti/lib/jiti.mjs and jiti/lib/jiti.cjs
   // both call into node:module to obtain `createRequire`. Without the
   // string-replace-loader patches in webpack.config.js, webpack either drops

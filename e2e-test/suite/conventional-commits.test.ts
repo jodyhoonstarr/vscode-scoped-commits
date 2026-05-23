@@ -89,6 +89,8 @@ suite('extension.conventionalCommits e2e', () => {
   let repository: GitRepository;
   let gitApi: GitAPI;
   let stubs: PromptStubs | undefined;
+  const extensionOutputLines: string[] = [];
+  const extensionErrorMessages: string[] = [];
   // Captured value of `repository.inputBox.value` the moment production code
   // assigned it. We trap the setter rather than read after `executeCommand`
   // resolves because `git.commit` clears the input box on success.
@@ -118,6 +120,7 @@ suite('extension.conventionalCommits e2e', () => {
       const originalAppendLine = channel.appendLine.bind(channel);
       channel.appendLine = (line: string) => {
         console.log(`[ext-output:${name}] ${line}`);
+        extensionOutputLines.push(`[${name}] ${line}`);
         originalAppendLine(line);
       };
       return channel;
@@ -136,6 +139,7 @@ suite('extension.conventionalCommits e2e', () => {
       ...rest: unknown[]
     ): Thenable<string | undefined> {
       console.log(`[ext-error] ${message}`);
+      extensionErrorMessages.push(message);
       return (originalShowErrorMessage as Function).call(
         vscode.window,
         message,
@@ -189,6 +193,8 @@ suite('extension.conventionalCommits e2e', () => {
       stubs.dispose();
       stubs = undefined;
     }
+    extensionOutputLines.length = 0;
+    extensionErrorMessages.length = 0;
   });
 
   test('runs the full conventional-commit flow', async function () {
@@ -502,6 +508,137 @@ suite('extension.conventionalCommits e2e', () => {
       expectedMessage,
       `repository.inputBox.value should be ${JSON.stringify(expectedMessage)} ` +
         `— if it starts with a default type like 'feat', parse-json was not bundled`,
+    );
+  });
+
+  // Regression test for issue #401: when the workspace path contains spaces,
+  // commitlint resolves `extends: ["@commitlint/config-conventional"]` to an
+  // absolute path and converts it to a file:// URL before dynamic import.
+  // The bundled extension must preserve runtime import semantics for that URL
+  // instead of routing it through require(), which previously produced:
+  //   Cannot find module 'file:///.../node_modules/@commitlint/config-conventional/lib/index.js'
+  test('loads @commitlint/config-conventional from extends in a repo path with spaces (issue #401 regression)', async function () {
+    this.timeout(60000);
+
+    // The launcher now provisions the mock repo in a path with spaces so this
+    // test reproduces the original encoded-file-URL resolution path.
+    assert.match(
+      repoPath,
+      /\s/,
+      `mock repo path must contain spaces to reproduce issue #401; got ${JSON.stringify(repoPath)}`,
+    );
+
+    const commitlintrcPath = path.join(repoPath, '.commitlintrc.json');
+    const jsonConfig = JSON.stringify({
+      extends: ['@commitlint/config-conventional'],
+    });
+    fs.writeFileSync(commitlintrcPath, jsonConfig, 'utf8');
+
+    let localCapturedValue: string | undefined;
+
+    try {
+      stubs = installPromptStubs([
+        'feat',
+        '',
+        '',
+        'issue 401 reproduction',
+        '',
+        '',
+      ]);
+
+      const trackedFileUri = vscode.Uri.file(path.join(repoPath, 'README.md'));
+      const newContents = Buffer.from(
+        '# E2E mock repo\n\nissue-401 edit ' + Date.now() + '\n',
+        'utf8',
+      );
+      await vscode.workspace.fs.writeFile(trackedFileUri, newContents);
+      await repository.add([trackedFileUri.fsPath]);
+
+      const inputBoxRef = repository.inputBox as { value: string };
+      const valueOwner: object = ((): object => {
+        let cur: object | null = inputBoxRef;
+        while (cur) {
+          if (Object.prototype.hasOwnProperty.call(cur, 'value')) return cur;
+          cur = Object.getPrototypeOf(cur);
+        }
+        return inputBoxRef;
+      })();
+      const origDescriptor = Object.getOwnPropertyDescriptor(
+        valueOwner,
+        'value',
+      );
+      if (origDescriptor) {
+        const origSet = origDescriptor.set;
+        const origGet = origDescriptor.get;
+        Object.defineProperty(valueOwner, 'value', {
+          configurable: true,
+          enumerable: origDescriptor.enumerable,
+          get() {
+            return origGet ? origGet.call(this) : undefined;
+          },
+          set(next: string) {
+            if (typeof next === 'string' && next !== '') {
+              localCapturedValue = next;
+            }
+            if (origSet) origSet.call(this, next);
+          },
+        });
+      }
+
+      await vscode.commands.executeCommand(COMMAND_ID, repository.rootUri);
+    } finally {
+      fs.unlinkSync(commitlintrcPath);
+    }
+
+    console.log(
+      '[e2e diagnostic] issue-401 capturedInputBoxValue:',
+      JSON.stringify(localCapturedValue),
+    );
+
+    const outputText = extensionOutputLines.join('\n');
+    const expectedMessage = 'feat: issue 401 reproduction';
+    assert.strictEqual(
+      localCapturedValue,
+      expectedMessage,
+      `repository.inputBox.value should be ${JSON.stringify(expectedMessage)} ` +
+        `after loading @commitlint/config-conventional from extends`,
+    );
+
+    assert.ok(
+      outputText.includes('Load commitlint configuration successfully.'),
+      `extension output must confirm commitlint config loading; got ${JSON.stringify(
+        extensionOutputLines,
+      )}`,
+    );
+
+    assert.ok(
+      outputText.includes('"subject-full-stop"') &&
+        outputText.includes('"type-enum"'),
+      `extension output must include rules from @commitlint/config-conventional; got ${JSON.stringify(
+        extensionOutputLines,
+      )}`,
+    );
+
+    const cannotFindFileUrl = extensionOutputLines.find(
+      (line) =>
+        line.includes("Cannot find module 'file:///") &&
+        line.includes('@commitlint/config-conventional/lib/index.js'),
+    );
+    assert.strictEqual(
+      cannotFindFileUrl,
+      undefined,
+      `extension output must not contain the old file:// module-resolution failure from issue #401; got ${JSON.stringify(
+        cannotFindFileUrl,
+      )}`,
+    );
+
+    assert.ok(
+      extensionErrorMessages.every(
+        (message) => !message.includes('@commitlint/config-conventional'),
+      ),
+      `extension UI errors must not mention @commitlint/config-conventional; got ${JSON.stringify(
+        extensionErrorMessages,
+      )}`,
     );
   });
 
