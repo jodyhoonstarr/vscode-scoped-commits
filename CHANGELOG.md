@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.30.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.29.0...v1.30.0) (2026-05-23)
+
+### Features
+
+- **dev:** add watch-mode vscode launcher ([50f38c5](https://github.com/vivaxy/vscode-conventional-commits/commit/50f38c59f1ed8998bc0d5ab9e279cee1abe4caf3))
+
+### Bug Fixes
+
+- **bundle:** support commitlint extends file URL loading ([ce084c2](https://github.com/vivaxy/vscode-conventional-commits/commit/ce084c280e6c98b51d53556d164821b6e861eec6))
+- **deps:** update commitlint monorepo to v21 ([ca80399](https://github.com/vivaxy/vscode-conventional-commits/commit/ca803999e967cda9671d1f33fb869f233993eedf))
+
 ## [1.29.0](https://github.com/vivaxy/vscode-conventional-commits/compare/v1.28.3...v1.29.0) (2026-05-18)
 
 ### Features
