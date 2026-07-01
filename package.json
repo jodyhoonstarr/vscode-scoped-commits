@@ -163,12 +163,12 @@
     "webpack-dev": "webpack --mode development --watch",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "deploy": "vsce publish --yarn",
-    "build": "node prepare.js && vsce package --yarn",
-    "_build": "vsce package --yarn",
-    "prepare": "husky install",
+    "deploy": "vsce publish --no-dependencies",
+    "build": "node prepare.js && vsce package --no-dependencies",
+    "_build": "vsce package --no-dependencies",
+    "prepare": "husky",
     "test": "vitest run",
-    "test:e2e": "yarn webpack && tsc -p e2e-test && node ./e2e-test/out/runTest.js"
+    "test:e2e": "pnpm webpack && tsc -p e2e-test && node ./e2e-test/out/runTest.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.0",
