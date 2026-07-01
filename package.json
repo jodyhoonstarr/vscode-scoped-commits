@@ -4,6 +4,7 @@
   "description": "Scope-first commit messages for VSCode.",
   "icon": "assets/icon.png",
   "version": "1.0.0",
+  "publisher": "scoped-commits",
   "engines": {
     "vscode": "^1.44.0"
   },
