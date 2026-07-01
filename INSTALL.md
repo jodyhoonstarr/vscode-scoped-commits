@@ -115,11 +115,3 @@ npm run test
 ```
 
 28 tests covering `CommitMessage` serialization and commitlint config loading.
-
----
-
-## Uninstall
-
-```bash
-code --uninstall-extension scoped-commits.vscode-scoped-commits
-```
