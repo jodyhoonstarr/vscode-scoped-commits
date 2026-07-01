@@ -1,5 +1,5 @@
 export default {
   rules: {
-    'type-enum': [2, 'always', ['ts-type']],
+    'scope-enum': [2, 'always', ['ts-scope']],
   },
 };

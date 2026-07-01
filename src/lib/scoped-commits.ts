@@ -100,18 +100,18 @@ async function getRepository({
   return git.repositories[index];
 }
 
-export default function createConventionalCommits() {
-  return async function conventionalCommits(
+export default function createScopedCommits() {
+  return async function scopedCommits(
     repoUri?: VSCodeGit.Repository | vscode.Uri,
   ) {
     try {
-      output.info('Conventional commits started.');
+      output.info('Scoped commits started.');
 
       // 1. output basic information
       output.info(`VSCode version: ${vscode.version}`);
       output.extensionVersion('Git', 'vscode.git');
 
-      output.extensionVersion('VSCode Conventional Commits', ID);
+      output.extensionVersion('VSCode Scoped Commits', ID);
       output.extensionConfiguration(ID);
 
       output.relatedExtensionConfiguration('git.enableSmartCommit');
@@ -151,7 +151,6 @@ export default function createConventionalCommits() {
         emojiFormat:
           configuration.get<configuration.EMOJI_FORMAT>('emojiFormat'),
         lineBreak: configuration.get<string>('lineBreak'),
-        promptScopes: configuration.get<boolean>('promptScopes'),
         promptBody: configuration.get<boolean>('promptBody'),
         promptFooter: configuration.get<boolean>('promptFooter'),
         promptCI: configuration.get<boolean>('promptCI'),
@@ -185,11 +184,11 @@ export default function createConventionalCommits() {
         output.info('Auto commit finished successfully.');
       }
 
-      output.info('conventionalCommits finished successfully.');
+      output.info('scopedCommits finished successfully.');
     } catch (e) {
       // Ignore if the custom error message
       if (e.message === 'custom breaking error has been catch!') {
-        output.info('conventionalCommits finished with custom error.');
+        output.info('scopedCommits finished with custom error.');
       } else output.error('main', e);
     }
   };

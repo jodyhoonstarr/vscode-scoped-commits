@@ -1,5 +1,5 @@
 rules:
-  type-enum:
+  scope-enum:
     - 2
     - always
-    - - yaml-type
+    - - yaml-scope

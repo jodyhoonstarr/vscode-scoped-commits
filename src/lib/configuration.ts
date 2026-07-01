@@ -19,7 +19,6 @@ export type Configuration = {
   scopes: string[];
   tags: string[];
   lineBreak: string;
-  promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
   promptCI: boolean;
@@ -35,9 +34,9 @@ export function getConfiguration() {
 }
 
 export function get<T>(key: keyof Configuration): T {
-  return (getConfiguration().get<Configuration>(
+  return getConfiguration().get<Configuration>(
     `${keys.PREFIX}.${key}`,
-  ) as unknown) as T;
+  ) as unknown as T;
 }
 
 export async function update(

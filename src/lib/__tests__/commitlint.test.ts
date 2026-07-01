@@ -21,31 +21,22 @@ test('should load commitlint@v17.8.1', async function () {
   await commitlint.loadRuleConfigs(
     path.join(fixtureRootPath, 'should-load-commitlint@v17.8.1'),
   );
-  expect(commitlint.getTypeEnum()).toStrictEqual(['foo']);
+  expect(commitlint.getScopeEnum()).toStrictEqual(['foo']);
 });
 
 test('should load commitlint@v19.3.1', async function () {
   await commitlint.loadRuleConfigs(
     path.join(fixtureRootPath, 'should-load-commitlint@v19.2.2'),
   );
-  expect(commitlint.getTypeEnum()).toStrictEqual(['bar']);
+  expect(commitlint.getScopeEnum()).toStrictEqual(['bar']);
 });
 
 test('should load @commitlint/config-conventional from the repo root config', async function () {
   await commitlint.loadRuleConfigs(repoRootPath);
-  expect(commitlint.getTypeEnum()).toStrictEqual([
-    'build',
-    'chore',
-    'ci',
-    'docs',
-    'feat',
-    'fix',
-    'perf',
-    'refactor',
-    'revert',
-    'style',
-    'test',
-  ]);
+  // @commitlint/config-conventional does not define scope-enum, so the
+  // result is an empty array. This test just verifies the config loads
+  // without error.
+  expect(commitlint.getScopeEnum()).toStrictEqual([]);
 });
 
 // Regression tests for issue #391: cosmiconfig v9 lazy-requires parse-json and
@@ -54,14 +45,14 @@ test('should load JSON config (exercises cosmiconfig parse-json)', async functio
   await commitlint.loadRuleConfigs(
     path.join(fixtureRootPath, 'should-load-json-config'),
   );
-  expect(commitlint.getTypeEnum()).toStrictEqual(['json-type']);
+  expect(commitlint.getScopeEnum()).toStrictEqual(['json-scope']);
 });
 
 test('should load YAML config (exercises cosmiconfig js-yaml)', async function () {
   await commitlint.loadRuleConfigs(
     path.join(fixtureRootPath, 'should-load-yaml-config'),
   );
-  expect(commitlint.getTypeEnum()).toStrictEqual(['yaml-type']);
+  expect(commitlint.getScopeEnum()).toStrictEqual(['yaml-scope']);
 });
 
 // Regression test for issue #395: jiti.cjs passes createRequire from node:module
@@ -72,5 +63,5 @@ test('should load TypeScript config (regression for issue #395 / jiti.cjs create
   await commitlint.loadRuleConfigs(
     path.join(fixtureRootPath, 'should-load-ts-config'),
   );
-  expect(commitlint.getTypeEnum()).toStrictEqual(['ts-type']);
+  expect(commitlint.getScopeEnum()).toStrictEqual(['ts-scope']);
 });

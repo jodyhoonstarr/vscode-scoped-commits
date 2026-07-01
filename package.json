@@ -1,10 +1,10 @@
 {
-  "name": "vscode-conventional-commits",
+  "name": "vscode-scoped-commits",
   "displayName": "%extension.name%",
-  "description": "💬Conventional Commits for VSCode.",
+  "description": "Scope-first commit messages for VSCode.",
   "icon": "assets/icon.png",
-  "publisher": "vivaxy",
-  "version": "1.31.0",
+  "publisher": "scoped-commits",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.44.0"
   },
@@ -15,11 +15,8 @@
   "keywords": [
     "git",
     "commit",
-    "conventional-commits",
-    "gacp",
-    "conventional-changelog",
-    "commitizen",
-    "cz"
+    "scoped-commits",
+    "scope"
   ],
   "repository": {
     "type": "git",
@@ -32,15 +29,15 @@
   },
   "homepage": "https://github.com/vivaxy/vscode-conventional-commits",
   "activationEvents": [
-    "onCommand:extension.conventionalCommits",
-    "onCommand:extension.conventionalCommits.resetGlobalState",
-    "onCommand:extension.conventionalCommits.showNewVersionNotes"
+    "onCommand:extension.scopedCommits",
+    "onCommand:extension.scopedCommits.resetGlobalState",
+    "onCommand:extension.scopedCommits.showNewVersionNotes"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.conventionalCommits",
+        "command": "extension.scopedCommits",
         "title": "%extension.name%",
         "icon": {
           "dark": "./assets/menu-icon-dark.svg",
@@ -48,11 +45,11 @@
         }
       },
       {
-        "command": "extension.conventionalCommits.resetGlobalState",
+        "command": "extension.scopedCommits.resetGlobalState",
         "title": "%extension.commands.resetGlobalState%"
       },
       {
-        "command": "extension.conventionalCommits.showNewVersionNotes",
+        "command": "extension.scopedCommits.showNewVersionNotes",
         "title": "%extension.commands.showNewVersionNotes%"
       }
     ],
@@ -60,7 +57,7 @@
       "scm/title": [
         {
           "when": "scmProvider == git",
-          "command": "extension.conventionalCommits",
+          "command": "extension.scopedCommits",
           "group": "navigation"
         }
       ]
@@ -68,27 +65,27 @@
     "configuration": {
       "title": "%extension.name%",
       "properties": {
-        "conventionalCommits.autoCommit": {
+        "scopedCommits.autoCommit": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%extension.configuration.autoCommit.markdownDescription%"
         },
-        "conventionalCommits.storeScopesGlobally": {
+        "scopedCommits.storeScopesGlobally": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.storeScopesGlobally.markdownDescription%"
         },
-        "conventionalCommits.storeTagsGlobally": {
+        "scopedCommits.storeTagsGlobally": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.storeTagsGlobally.markdownDescription%"
         },
-        "conventionalCommits.silentAutoCommit": {
+        "scopedCommits.silentAutoCommit": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.silentAutoCommit.markdownDescription%"
         },
-        "conventionalCommits.emojiFormat": {
+        "scopedCommits.emojiFormat": {
           "type": "string",
           "default": "code",
           "markdownDescription": "%extension.configuration.emojiFormat.markdownDescription%",
@@ -101,62 +98,57 @@
             "%extension.configuration.emojiFormat.markdownEnumDescriptions.emoji%"
           ]
         },
-        "conventionalCommits.gitmoji": {
+        "scopedCommits.gitmoji": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "markdownDescription": "%extension.configuration.gitmoji.markdownDescription%"
         },
-        "conventionalCommits.lineBreak": {
+        "scopedCommits.lineBreak": {
           "type": "string",
           "default": "",
           "markdownDescription": "%extension.configuration.lineBreak.markdownDescription%"
         },
-        "conventionalCommits.promptBody": {
+        "scopedCommits.promptBody": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%extension.configuration.promptBody.markdownDescription%"
         },
-        "conventionalCommits.promptCI": {
+        "scopedCommits.promptCI": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.promptCI.markdownDescription%"
         },
-        "conventionalCommits.promptFooter": {
+        "scopedCommits.promptFooter": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%extension.configuration.promptFooter.markdownDescription%"
         },
-        "conventionalCommits.promptScopes": {
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "%extension.configuration.promptScopes.markdownDescription%"
-        },
-        "conventionalCommits.scopes": {
+        "scopedCommits.scopes": {
           "type": "array",
           "default": [],
           "markdownDescription": "%extension.configuration.scopes.markdownDescription%"
         },
-        "conventionalCommits.promptTag": {
+        "scopedCommits.promptTag": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.promptTag.markdownDescription%"
         },
-        "conventionalCommits.tags": {
+        "scopedCommits.tags": {
           "type": "array",
           "default": [],
           "markdownDescription": "%extension.configuration.tags.markdownDescription%"
         },
-        "conventionalCommits.showEditor": {
+        "scopedCommits.showEditor": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.showEditor.markdownDescription%"
         },
-        "conventionalCommits.showNewVersionNotes": {
+        "scopedCommits.showNewVersionNotes": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%extension.configuration.showNewVersionNotes.markdownDescription%"
         },
-        "conventionalCommits.editor.keepAfterSave": {
+        "scopedCommits.editor.keepAfterSave": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "%extension.configuration.editor.keepAfterSave.markdownDescription%"
@@ -212,10 +204,5 @@
     "@commitlint/load": "^21.0.0",
     "@commitlint/rules": "^21.0.0",
     "@yi-xu-0100/conventional-commit-types-i18n": "1.6.0"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
   }
 }

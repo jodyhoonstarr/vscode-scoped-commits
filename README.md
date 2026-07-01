@@ -1,203 +1,182 @@
-# VSCode Conventional Commits
+# VSCode Scoped Commits
 
-[![Marketplace Version](https://vsmarketplacebadges.dev/version/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
-[![Installs](https://vsmarketplacebadges.dev/installs-short/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
-[![Downloads](https://vsmarketplacebadges.dev/downloads-short/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
-[![Rating](https://vsmarketplacebadges.dev/rating/vivaxy.vscode-conventional-commits.svg)](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
-[![Financial Contributors on Open Collective](https://opencollective.com/vscode-conventional-commits/all/badge.svg?label=financial+contributors)](https://opencollective.com/vscode-conventional-commits)
+A VS Code extension for writing scope-first commit messages following the
+[Scoped Commits](https://scopedcommits.com/) convention.
 
-[Conventional Commits](https://www.conventionalcommits.org/) for VSCode.
+Forked from
+[vivaxy/vscode-conventional-commits](https://github.com/vivaxy/vscode-conventional-commits).
 
-## Features
+---
 
-This extension helps you to fill in commit message according to
-[Conventional Commits](https://www.conventionalcommits.org/).
+## How this differs from the original
 
-- Support
-  [commitlint configs](https://commitlint.js.org/#/reference-configuration). See
-  [Supported Commitlint Rules](#supported-commitlint-rules) for details.
-  - Now supports
-    [commitlint `prompt` metadata](https://commitlint.js.org/reference/prompt.html)
-    to display custom descriptions and titles in the VS Code picker.
-- Support auto commit and push after typing messages. See
-  [Commit Workflow](#commit-workflow) for details.
-- Support project level scope management.
-- Support [gitmojis](https://gitmoji.carloscuesta.me/).
-- Support VSCode workspaces.
-- Support tags for adding metadata (e.g., `[release]`) to commit headers.
+The original extension guides you through
+[Conventional Commits](https://www.conventionalcommits.org/), where **type** is
+the required first field:
+
+```
+feat(auth): add login button
+fix(api): handle null response
+docs: update readme
+```
+
+This fork reorients around [Scoped Commits](https://scopedcommits.com/), where
+**scope** is the required first field and there is no type prefix:
+
+```
+auth: add login button
+api: handle null response
+docs: update readme
+```
+
+The premise, from scopedcommits.com: the _scope_ (what area of the codebase
+changed) is the most useful piece of information when scanning a commit log.
+Type prefixes like `feat` and `fix` describe intent, but scope tells you
+immediately whether a commit is relevant to the area you care about.
+
+### Specific changes from the original
+
+|                 | vscode-conventional-commits   | vscode-scoped-commits                 |
+| --------------- | ----------------------------- | ------------------------------------- |
+| First prompt    | Type (`feat`, `fix`, `docs`…) | **Scope** (`auth`, `api`, `ui`…)      |
+| Scope required? | No — skippable                | **Yes — always prompted**             |
+| Output format   | `type(scope): description`    | `scope: description`                  |
+| Gitmoji default | On                            | **Off** (still available via setting) |
+| Setting prefix  | `conventionalCommits.*`       | `scopedCommits.*`                     |
+
+The scope prompt works the same way as before: pick from a saved list, add a new
+one (saved for next time), or type one off without saving. If your project has a
+`.commitlintrc` with `scope-enum` defined, those values are loaded automatically
+and presented as the only choices.
+
+---
 
 ## Usage
 
-![Demo](./assets/docs/demo.gif)
+Trigger the extension two ways:
 
-You can access VSCode Conventional Commits in two ways:
+1. `Ctrl+Shift+P` → **Scoped Commits**
+2. Click the icon in the Source Control panel title bar
 
-1. `Command + Shift + P` or `Ctrl + Shift + P`, enter `Conventional Commits`,
-   and press `Enter`.
-2. Click the icon on the Source Control menu. See the image below.
+### Prompt flow
 
-![Icon on the Source Control menu](./assets/docs/icon-on-the-source-control-menu.png)
+```
+1. Scope   ← required
+2. Subject ← required
+3. Body    ← optional (disable: scopedCommits.promptBody: false)
+4. Footer  ← optional (disable: scopedCommits.promptFooter: false)
+```
 
-### Extension Configuration
+### Pre-defining scopes
 
-|                    name                    |                                                                                                                                                                     description                                                                                                                                                                     | default |
-| :----------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----: |
-|      `conventionalCommits.autoCommit`      | Control whether the extension should commit files after: forming the message or closing the editor tab.<br>When `#git.enableSmartCommit#` enabled and `#git.smartCommitChanges#` was set to `all`, It allows to commit all changes when there are no staged changes.<br>And set `#git.postCommitCommand#` to `sync` to run `git.sync` after commit. |  true   |
-|     `conventionalCommits.emojiFormat`      |                                                                                                                                                Specify which format will be shown in the `gitmoji`.                                                                                                                                                 |  code   |
-|       `conventionalCommits.gitmoji`        |                                                                                                                                            Control whether the extension should prompt for a `gitmoji`.                                                                                                                                             |  true   |
-|      `conventionalCommits.lineBreak`       |                                                                                                                           Specify which word will be treated as line breaks in the `body`.<br>Blank means no line breaks.                                                                                                                           |   ""    |
-|      `conventionalCommits.promptBody`      |                                                                                                                                         Control whether the extension should prompt for the `body` section.                                                                                                                                         |  true   |
-|     `conventionalCommits.promptFooter`     |                                                                                                                                        Control whether the extension should prompt for the `footer` section.                                                                                                                                        |  true   |
-|       `conventionalCommits.promptCI`       |                                                                                                                                          Control whether the extension should prompt for skipping CI run.                                                                                                                                           |  false  |
-|     `conventionalCommits.promptScopes`     |                                                                                                                                        Control whether the extension should prompt for the `scope` section.                                                                                                                                         |  true   |
-|        `conventionalCommits.scopes`        |                                                                                                                                                Specify available selections in the `scope` section.                                                                                                                                                 |   []    |
-|      `conventionalCommits.promptTag`       |                                                                                                                                         Control whether the extension should prompt for the `tag` section.                                                                                                                                          |  false  |
-|        `conventionalCommits.tags`          |                                                                                                                                                 Specify available selections in the `tag` section.                                                                                                                                                  |   []    |
-|      `conventionalCommits.showEditor`      |                                                                                                                         Control whether the extension should show the commit message as a text document in a separate tab.                                                                                                                          |  false  |
-| `conventionalCommits.showNewVersionNotes`  |                                                                                                                                          Control whether the extension should show the new version notes.                                                                                                                                           |  true   |
-|   `conventionalCommits.silentAutoCommit`   |                                                                                                                                  Control that auto commit should be silent, without focusing source control panel.                                                                                                                                  |  false  |
-| `conventionalCommits.editor.keepAfterSave` |                                                                                                                           Control whether the extension should keep the editor tab open after saving the commit message.                                                                                                                            |  false  |
-|     `conventionalCommits.storeScopesGlobally`  |                                                                                                          Control whether the extension should store the defined scopes within your user settings. Uncheck to store in workspace settings.                                                                                                           |  false  |
-|      `conventionalCommits.storeTagsGlobally`   |                                                                                                           Control whether the extension should store the defined tags within your user settings. Uncheck to store in workspace settings.                                                                                                           |  false  |
+Add to `.vscode/settings.json` or user `settings.json`:
 
-## Commit Workflow
+```json
+{
+  "scopedCommits.scopes": ["auth", "api", "ui", "db", "docs", "ci"]
+}
+```
 
-The recommended workflow automatically add, commit and push files by default.
+Or let the extension build the list incrementally: choosing **New scope** (not
+"only use once") saves it automatically.
 
-If you want the extension to only fill in the message, disable `autoCommit`
-configuration.
+### Enforcing scopes with commitlint
 
-### The Recommended Workflow
+Define `scope-enum` in `.commitlintrc.json` to restrict which scopes are valid:
 
-1. Active the extension.
-2. Type messages.
+```json
+{
+  "rules": {
+    "scope-enum": [2, "always", ["auth", "api", "ui", "db"]]
+  }
+}
+```
 
-The extension will automatically add the changed files, perform the commit and
-push the commit to remote.
+The extension reads this and presents only those scopes in the picker.
 
-### How To Configure `autoCommit`
+---
 
-1. Enable `Settings > conventionalCommits.autoCommit` configuration of the
-   extension. _The extension enables `Settings > conventionalCommits.autoCommit`
-   by default._
-2. Enable `Settings > git.enableSmartCommit` and set
-   `Settings > git.smartCommitChanges` to `all` to commit all changes when there
-   are no staged changes.
-3. Set `Settings > git.postCommitCommand` to `sync` to run `git.sync` after
-   commit.
+## Configuration
 
-### Supported [Commitlint Rules](https://commitlint.js.org/#/reference-rules)
+| Setting                              | Default | Description                                              |
+| ------------------------------------ | ------- | -------------------------------------------------------- |
+| `scopedCommits.scopes`               | `[]`    | Pre-defined scope list                                   |
+| `scopedCommits.autoCommit`           | `true`  | Commit automatically after forming the message           |
+| `scopedCommits.promptBody`           | `true`  | Prompt for commit body                                   |
+| `scopedCommits.promptFooter`         | `true`  | Prompt for commit footer                                 |
+| `scopedCommits.promptCI`             | `false` | Prompt for `[skip ci]`                                   |
+| `scopedCommits.promptTag`            | `false` | Prompt for a header tag (e.g. `[release]`)               |
+| `scopedCommits.tags`                 | `[]`    | Pre-defined tag list                                     |
+| `scopedCommits.gitmoji`              | `false` | Enable gitmoji picker                                    |
+| `scopedCommits.emojiFormat`          | `code`  | Show gitmoji as `:code:` or emoji character              |
+| `scopedCommits.lineBreak`            | `""`    | Word treated as a line break in the body                 |
+| `scopedCommits.showEditor`           | `false` | Show full message in a separate editor tab               |
+| `scopedCommits.silentAutoCommit`     | `false` | Auto-commit without focusing the SCM panel               |
+| `scopedCommits.storeScopesGlobally`  | `false` | Save new scopes to user settings instead of workspace    |
+| `scopedCommits.storeTagsGlobally`    | `false` | Save new tags to user settings instead of workspace      |
+| `scopedCommits.showNewVersionNotes`  | `true`  | Show a notification on new versions                      |
+| `scopedCommits.editor.keepAfterSave` | `false` | Keep the editor tab open after saving the commit message |
 
-- [x] `body-full-stop`
-- [ ] `body-leading-blank`
-- [x] `body-max-length`
-- [ ] `body-max-line-length`
-- [x] `body-min-length`
-- [ ] `footer-leading-blank`
-- [x] `footer-max-length`
-- [ ] `footer-max-line-length`
-- [x] `footer-min-length`
-- [x] `header-case`
-- [x] `header-full-stop`
-- [x] `header-max-length`
-- [x] `header-min-length`
-- [ ] `references-empty`
-- [x] `scope-enum`
-- [x] `scope-case`
-- [x] `scope-empty`
-- [x] `scope-max-length`
-- [x] `scope-min-length`
-- [x] `subject-case`
-- [x] `subject-empty`
-- [x] `subject-full-stop`
-- [x] `subject-max-length`
-- [x] `subject-min-length`
-- [x] `type-enum`
-- [x] `type-case`
-- [x] `type-empty`
-- [x] `type-max-length`
-- [x] `type-min-length`
-- [ ] `signed-off-by`
+### Configuring `autoCommit`
 
-## FAQ
+When `autoCommit` is enabled (the default), the extension stages, commits, and
+pushes for you:
 
-**Q:** How do I add a line break in messages?
+1. Enable `git.enableSmartCommit` and set `git.smartCommitChanges` to `all` so
+   all working-tree changes are committed when nothing is staged.
+2. Set `git.postCommitCommand` to `sync` to push after each commit.
 
-**A:** Set `lineBreak` configuration to `\n`. When you're typing, enter `\n` as
-a line break.
+To use the extension only as a message formatter (filling in the SCM input box
+without committing), set `scopedCommits.autoCommit: false`.
 
-![image](https://user-images.githubusercontent.com/4216856/107896171-81d25e80-6f70-11eb-926e-2a8ba33e435e.png)
+---
 
-Or `\\n` in JSON format.
+## Supported commitlint rules
 
-![image](https://user-images.githubusercontent.com/4216856/107896204-9c0c3c80-6f70-11eb-8245-6a1357172c6b.png)
+The following rules from `.commitlintrc` are respected during input validation:
 
-**Q:** How do I resolve `repo not found` error?
+- `scope-enum` · `scope-case` · `scope-empty` · `scope-max-length` ·
+  `scope-min-length`
+- `subject-case` · `subject-empty` · `subject-full-stop` · `subject-max-length`
+  · `subject-min-length`
+- `header-case` · `header-full-stop` · `header-max-length` · `header-min-length`
+- `body-full-stop` · `body-max-length` · `body-min-length`
+- `footer-max-length` · `footer-min-length`
 
-**A:** See issue discussion
-[#15](https://github.com/vivaxy/vscode-conventional-commits/issues/15#issuecomment-633161627).
+Type-related rules (`type-enum`, `type-case`, etc.) are no longer applicable and
+are ignored.
 
-**Q:** How do I use `commitlint` in `showEditor` mode?
+---
 
-**A:** The extension - [vscode-commitlint] will helpful!
+## Build & install
 
-[vscode-commitlint]: https://github.com/joshbolduc/vscode-commitlint
+See [INSTALL.md](./INSTALL.md) for full instructions. Quick version:
 
-## Troubleshooting
-
-1. Switch to the VSCode `OUTPUT` tab, select `Conventional Commits`.
-2. Copy all the output. Before sharing it, make sure you have removed all
-   private information.
-
-![Debug instruction](./assets/docs/debug-instruction.png)
-
-## Contribution
-
-1. The vscode task needs to install the extension -
-   [vscode-tsl-problem-matcher].
-2. The effect of code changes needs to reactivate the extension. Just restart
-   the task.
+```bash
+npm install
+node prepare.js
+npx @vscode/vsce package --no-yarn
+code --install-extension vscode-scoped-commits-1.0.0.vsix
+```
 
 ### Tests
 
-- `yarn test` runs the unit test suite (vitest).
-- `yarn test:e2e` runs the end-to-end suite: it builds the extension bundle,
-  launches a real VS Code instance against a temporary git repo, drives the
-  conventional-commits flow non-interactively, and asserts a real commit lands
-  on `HEAD`. Sources live under `e2e-test/`. The first run downloads a VS Code
-  build into `.vscode-test/` (network access required).
+```bash
+npm test          # unit tests (vitest)
+npm run test:e2e  # end-to-end tests in a real VS Code host
+```
 
-[vscode-tsl-problem-matcher]:
-  https://github.com/eamodio/vscode-tsl-problem-matcher
+---
 
-## Team Members
+## Troubleshooting
 
-- [vivaxy](https://github.com/vivaxy)
-- [yi_Xu](https://github.com/yi-Xu-0100)
+Open the VS Code **Output** panel and select **Scoped Commits** to see the
+extension's diagnostic log.
 
-## Financial Contributors
+---
 
-Become a financial contributor and help us sustain our community.
-[[Contribute](https://opencollective.com/vscode-conventional-commits/contribute)]
+## Credits
 
-### Individuals
-
-<a href="https://opencollective.com/vscode-conventional-commits"><img src="https://opencollective.com/vscode-conventional-commits/individuals.svg?width=890"></a>
-
-### Organizations
-
-Support this project with your organization. Your logo will show up here with a
-link to your website.
-[[Contribute](https://opencollective.com/vscode-conventional-commits/contribute)]
-
-<a href="https://opencollective.com/vscode-conventional-commits"><img src="https://opencollective.com/vscode-conventional-commits/organization.svg?width=890"></a>
-
-## Related Projects
-
-- [gacp](https://github.com/vivaxy/gacp)
-- [Commit Tagger](https://github.com/Mongkii/Commit-Tagger)
-- [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen)
-- [Commit Message Editor](https://github.com/bendera/vscode-commit-message-editor)
-- [commitji](https://github.com/jmaicaaan/commitji)
-- [idea-conventional-commit](https://github.com/lppedd/idea-conventional-commit)
-- [Git-commit-plugin For Vscode](https://github.com/RedJue/git-commit-plugin)
+Built on top of
+[vivaxy/vscode-conventional-commits](https://github.com/vivaxy/vscode-conventional-commits)
+by vivaxy and yi_Xu. Original license: MIT.

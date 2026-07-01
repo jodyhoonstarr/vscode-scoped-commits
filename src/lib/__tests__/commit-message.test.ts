@@ -10,16 +10,10 @@ import {
   serialize,
 } from '../commit-message';
 
-test('CommitMessage trims whitespace around type', function () {
-  const commitMessage = new CommitMessage();
-  commitMessage.type = '  feat  ';
-  expect(commitMessage.type).toBe('feat');
-});
-
 test('CommitMessage trims whitespace around scope', function () {
   const commitMessage = new CommitMessage();
-  commitMessage.scope = '  scope  ';
-  expect(commitMessage.scope).toBe('scope');
+  commitMessage.scope = '  auth  ';
+  expect(commitMessage.scope).toBe('auth');
 });
 
 test('CommitMessage trims whitespace around gitmoji', function () {
@@ -74,126 +68,134 @@ test('serializeSubject returns empty string when both gitmoji and subject are em
   expect(serializeSubject({ gitmoji: '', subject: '' })).toBe('');
 });
 
-test('serializeHeader renders type-only header', function () {
+test('serializeHeader renders scope-only header', function () {
   expect(
     serializeHeader({
       ci: '',
-      type: 'feat',
-      scope: '',
+      scope: 'auth',
       gitmoji: '',
       subject: '',
       tag: '',
     }),
-  ).toBe('feat: ');
+  ).toBe('auth: ');
 });
 
-test('serializeHeader renders type and scope', function () {
+test('serializeHeader renders scope and subject', function () {
   expect(
     serializeHeader({
       ci: '',
-      type: 'feat',
-      scope: 'scope',
+      scope: 'auth',
       gitmoji: '',
-      subject: '',
+      subject: 'add login',
       tag: '',
     }),
-  ).toBe('feat(scope): ');
+  ).toBe('auth: add login');
 });
 
-test('serializeHeader renders type, scope, gitmoji, and subject', function () {
+test('serializeHeader renders scope, gitmoji, and subject', function () {
   expect(
     serializeHeader({
       ci: '',
-      type: 'feat',
-      scope: 'scope',
+      scope: 'auth',
       gitmoji: ':sparkles:',
       subject: 'add login',
       tag: '',
     }),
-  ).toBe('feat(scope): :sparkles: add login');
+  ).toBe('auth: :sparkles: add login');
 });
 
 test('serializeHeader appends [skip ci] when ci is Yes', function () {
   expect(
     serializeHeader({
       ci: 'Yes',
-      type: 'feat',
-      scope: 'scope',
-      gitmoji: ':sparkles:',
+      scope: 'auth',
+      gitmoji: '',
       subject: 'add login',
       tag: '',
     }),
-  ).toBe('feat(scope): :sparkles: add login [skip ci]');
+  ).toBe('auth: add login [skip ci]');
 });
 
-test('serializeHeader render tag', function () {
+test('serializeHeader renders tag', function () {
   expect(
     serializeHeader({
       ci: '',
-      type: 'feat',
-      scope: 'scope',
-      gitmoji: ':sparkles:',
+      scope: 'auth',
+      gitmoji: '',
       subject: 'add login',
       tag: '[release]',
     }),
-  ).toBe('feat(scope): :sparkles: add login [release]');
+  ).toBe('auth: add login [release]');
 });
 
-test('serializeHeader render tag and appends [skip ci] when ci is Yes', function () {
+test('serializeHeader renders tag and appends [skip ci] when ci is Yes', function () {
   expect(
     serializeHeader({
       ci: 'Yes',
-      type: 'feat',
-      scope: 'scope',
-      gitmoji: ':sparkles:',
+      scope: 'auth',
+      gitmoji: '',
       subject: 'add login',
       tag: '[release]',
     }),
-  ).toBe('feat(scope): :sparkles: add login [release] [skip ci]');
+  ).toBe('auth: add login [release] [skip ci]');
 });
 
 test('serialize renders header-only message', function () {
   const commitMessage = new CommitMessage();
-  commitMessage.type = 'feat';
-  commitMessage.scope = 'scope';
-  commitMessage.gitmoji = ':sparkles:';
+  commitMessage.scope = 'auth';
   commitMessage.subject = 'add login';
-  expect(serialize(commitMessage)).toBe('feat(scope): :sparkles: add login');
+  expect(serialize(commitMessage)).toBe('auth: add login');
 });
 
 test('serialize joins header and body with a blank line', function () {
   const commitMessage = new CommitMessage();
-  commitMessage.type = 'feat';
-  commitMessage.scope = 'scope';
-  commitMessage.gitmoji = ':sparkles:';
+  commitMessage.scope = 'auth';
   commitMessage.subject = 'add login';
   commitMessage.body = 'body content';
-  expect(serialize(commitMessage)).toBe(
-    'feat(scope): :sparkles: add login\n\nbody content',
-  );
+  expect(serialize(commitMessage)).toBe('auth: add login\n\nbody content');
 });
 
 test('serialize joins header and footer with a blank line', function () {
   const commitMessage = new CommitMessage();
-  commitMessage.type = 'feat';
-  commitMessage.scope = 'scope';
-  commitMessage.gitmoji = ':sparkles:';
+  commitMessage.scope = 'auth';
   commitMessage.subject = 'add login';
   commitMessage.footer = 'BREAKING CHANGE: api';
   expect(serialize(commitMessage)).toBe(
-    'feat(scope): :sparkles: add login\n\nBREAKING CHANGE: api',
+    'auth: add login\n\nBREAKING CHANGE: api',
   );
 });
 
 test('serialize joins header, body, and footer with blank lines', function () {
   const commitMessage = new CommitMessage();
-  commitMessage.type = 'feat';
-  commitMessage.scope = 'scope';
-  commitMessage.gitmoji = ':sparkles:';
+  commitMessage.scope = 'auth';
   commitMessage.subject = 'add login';
   commitMessage.body = 'body content';
   commitMessage.footer = 'BREAKING CHANGE: api';
   expect(serialize(commitMessage)).toBe(
-    'feat(scope): :sparkles: add login\n\nbody content\n\nBREAKING CHANGE: api',
+    'auth: add login\n\nbody content\n\nBREAKING CHANGE: api',
   );
+});
+
+test('serializeHeader with net/http nested scope', function () {
+  expect(
+    serializeHeader({
+      ci: '',
+      scope: 'net/http',
+      gitmoji: '',
+      subject: 'fix timeout handling',
+      tag: '',
+    }),
+  ).toBe('net/http: fix timeout handling');
+});
+
+test('serializeHeader with scope and ticket reference', function () {
+  expect(
+    serializeHeader({
+      ci: '',
+      scope: 'auth (PROJ-123)',
+      gitmoji: '',
+      subject: 'fix login bug',
+      tag: '',
+    }),
+  ).toBe('auth (PROJ-123): fix login bug');
 });

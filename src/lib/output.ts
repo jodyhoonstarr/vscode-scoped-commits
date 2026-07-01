@@ -10,7 +10,7 @@ import * as configuration from './configuration';
 let output: vscode.OutputChannel;
 
 export function initialize() {
-  output = vscode.window.createOutputChannel('Conventional Commits');
+  output = vscode.window.createOutputChannel('Scoped Commits');
 }
 
 export function appendLine(message: string) {

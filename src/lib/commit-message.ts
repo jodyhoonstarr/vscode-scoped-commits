@@ -3,7 +3,6 @@
  * @author vivaxy
  */
 export class CommitMessage {
-  private _type: string = '';
   private _scope: string = '';
   private _gitmoji: string = '';
   private _subject: string = '';
@@ -11,14 +10,6 @@ export class CommitMessage {
   private _footer: string = '';
   private _ci: string = '';
   private _tag: string = '';
-
-  get type() {
-    return this._type;
-  }
-
-  set type(input: string) {
-    this._type = input.trim();
-  }
 
   get scope() {
     return this._scope;
@@ -97,19 +88,13 @@ export function serializeSubject(partialCommitMessage: {
 
 export function serializeHeader(partialCommitMessage: {
   ci: string;
-  type: string;
   scope: string;
   gitmoji: string;
   subject: string;
   tag: string;
 }) {
-  let result = '';
-  result += partialCommitMessage.type;
   const { scope, ci, tag } = partialCommitMessage;
-  if (scope) {
-    result += `(${scope})`;
-  }
-  result += ': ';
+  let result = scope + ': ';
   const subject = serializeSubject(partialCommitMessage);
   if (subject) {
     result += subject;

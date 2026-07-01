@@ -98,22 +98,8 @@ class Commitlint {
     return '';
   }
 
-  getTypeEnum() {
-    return this.getEnum('type-enum');
-  }
-
   getScopeEnum() {
     return this.getEnum('scope-enum');
-  }
-
-  lintType(type: string) {
-    return this.lintRules({ type } as Commit, [
-      'type-enum',
-      'type-case',
-      'type-empty',
-      'type-min-length',
-      'type-max-length',
-    ]);
   }
 
   lintScope(scope: string) {

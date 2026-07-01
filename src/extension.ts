@@ -3,7 +3,7 @@
  * @author vivaxy
  */
 import * as vscode from 'vscode';
-import createConventionalCommits from './lib/conventional-commits';
+import createScopedCommits from './lib/scoped-commits';
 import * as output from './lib/output';
 import localize, {
   getSourcesLocalize,
@@ -18,11 +18,11 @@ export async function activate(context: vscode.ExtensionContext) {
   localizeInitialize();
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'extension.conventionalCommits',
-      createConventionalCommits(),
+      'extension.scopedCommits',
+      createScopedCommits(),
     ),
     vscode.commands.registerCommand(
-      'extension.conventionalCommits.resetGlobalState',
+      'extension.scopedCommits.resetGlobalState',
       () => {
         context.globalState.update('version', '0.0.0');
         const title = localize('extension.name');
@@ -31,7 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
       },
     ),
     vscode.commands.registerCommand(
-      'extension.conventionalCommits.showNewVersionNotes',
+      'extension.scopedCommits.showNewVersionNotes',
       () => output.showNewVersionNotes(ID, context, true),
     ),
   );

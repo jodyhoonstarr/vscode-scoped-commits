@@ -2,7 +2,6 @@
  * @since 2020-03-25 09:09
  * @author vivaxy
  */
-import getTypesByLocale from '@yi-xu-0100/conventional-commit-types-i18n';
 const gitmojis: {
   gitmojis: {
     emoji: string;
@@ -27,7 +26,7 @@ import {
   serializeHeader,
 } from './commit-message';
 import commitlint from './commitlint';
-import { getPromptLocalize, locale } from './localize';
+import { getPromptLocalize } from './localize';
 import { QuickInputButtons } from 'vscode';
 import { UserPromptConfig } from '@commitlint/types/lib/prompt';
 
@@ -36,18 +35,16 @@ export default async function prompts({
   showEditor,
   emojiFormat,
   lineBreak,
-  promptScopes,
   promptBody,
   promptFooter,
   promptCI,
-  promptConfig,
   promptTag,
+  promptConfig,
 }: {
   gitmoji: boolean;
   showEditor: boolean;
   emojiFormat: configuration.EMOJI_FORMAT;
   lineBreak: string;
-  promptScopes: boolean;
   promptBody: boolean;
   promptFooter: boolean;
   promptCI: boolean;
@@ -55,7 +52,6 @@ export default async function prompts({
   promptConfig?: UserPromptConfig;
 }): Promise<CommitMessage> {
   const commitMessage = new CommitMessage();
-  const conventionalCommitsTypes = getTypesByLocale(locale).types;
 
   function lineBreakFormatter(input: string): string {
     if (lineBreak) {
@@ -67,68 +63,11 @@ export default async function prompts({
     return input;
   }
 
-  function getTypeItems(): Item[] {
-    const typeEnum = commitlint.getTypeEnum();
-    const typeEnumFromPrompt = promptConfig?.questions?.type?.enum;
-
-    if (typeEnum.length === 0 && !typeEnumFromPrompt) {
-      return Object.keys(conventionalCommitsTypes).map(function (type) {
-        const { title, description } = conventionalCommitsTypes[type];
-        return {
-          label: type,
-          description: title,
-          detail: description,
-        };
-      });
-    }
-
-    // Use types from commitlint enum, or from prompt config enum, or conventional types
-    const allTypes = new Set<string>();
-    typeEnum.forEach((t) => allTypes.add(t));
-    if (typeEnumFromPrompt) {
-      Object.keys(typeEnumFromPrompt).forEach((t) => allTypes.add(t));
-    }
-    Object.keys(conventionalCommitsTypes).forEach((t) => allTypes.add(t));
-
-    return Array.from(allTypes).map(function (type) {
-      // Priority: prompt enum > conventional types > fallback
-      const promptMeta = typeEnumFromPrompt?.[type];
-      if (promptMeta) {
-        return {
-          label: type,
-          description: promptMeta.title || '',
-          detail: promptMeta.description || '',
-        };
-      }
-
-      if (type in conventionalCommitsTypes) {
-        const { description, title } = conventionalCommitsTypes[type];
-        return {
-          label: type,
-          description: title,
-          detail: description,
-        };
-      }
-
-      return {
-        label: type,
-        description: '',
-        detail: getPromptLocalize('type.fromCommitlintConfig'),
-      };
-    });
-  }
-
   function getScopePrompt(): Omit<Prompt, 'step' | 'totalSteps'> {
     const name = 'scope';
     const placeholder = getPromptLocalize('scope.placeholder');
     const scopeEnum = commitlint.getScopeEnum();
     const scopeEnumFromPrompt = promptConfig?.questions?.scope?.enum;
-    const noneItem: Item = {
-      label: getPromptLocalize('scope.noneItem.label'),
-      description: '',
-      detail: getPromptLocalize('scope.noneItem.detail'),
-      alwaysShow: true,
-    };
 
     // Use scopes from prompt config if available
     if (scopeEnumFromPrompt && Object.keys(scopeEnumFromPrompt).length > 0) {
@@ -146,7 +85,6 @@ export default async function prompts({
             detail: meta.description || '',
           };
         }),
-        noneItem,
       };
     }
 
@@ -163,10 +101,10 @@ export default async function prompts({
             detail: getPromptLocalize('type.fromCommitlintConfig'),
           };
         }),
-        noneItem,
       };
     }
 
+    // No predefined scopes: let user create/pick from their saved list
     return {
       type: PROMPT_TYPES.CONFIGURABLE_QUICK_PICK,
       name,
@@ -179,7 +117,6 @@ export default async function prompts({
         alwaysShow: true,
         placeholder: getPromptLocalize('scope.newItem.placeholder'),
       },
-      noneItem,
       newItemWithoutSetting: {
         label: getPromptLocalize('scope.newItemWithoutSetting.label'),
         description: '',
@@ -229,15 +166,6 @@ export default async function prompts({
   }
 
   const questions: Prompt[] = [
-    {
-      type: PROMPT_TYPES.QUICK_PICK,
-      name: 'type',
-      placeholder: getPromptLocalize('type.placeholder'),
-      items: getTypeItems(),
-      validate(input: string) {
-        return commitlint.lintType(input);
-      },
-    },
     getScopePrompt(),
     {
       type: PROMPT_TYPES.QUICK_PICK,
@@ -283,7 +211,7 @@ export default async function prompts({
         promptConfig?.questions?.subject?.description ||
         getPromptLocalize('subject.placeholder'),
       validate(input: string) {
-        const { type, scope, gitmoji, ci, tag } = commitMessage;
+        const { scope, gitmoji, ci, tag } = commitMessage;
         const serializedSubject = serializeSubject({
           gitmoji,
           subject: input,
@@ -302,7 +230,6 @@ export default async function prompts({
 
         let headerError = commitlint.lintHeader(
           serializeHeader({
-            type,
             scope,
             gitmoji,
             subject: input,
@@ -313,13 +240,8 @@ export default async function prompts({
         if (headerError) {
           headerError += ' (';
           headerError += getPromptLocalize('subject.error.including');
-          headerError += getPromptLocalize('subject.error.type');
-          headerError += type;
-          if (scope) {
-            headerError += ', ';
-            headerError += getPromptLocalize('subject.error.scope');
-            headerError += scope;
-          }
+          headerError += getPromptLocalize('subject.error.scope');
+          headerError += scope;
           if (gitmoji) {
             headerError += ', ';
             headerError += getPromptLocalize('subject.error.gitmoji');
@@ -357,8 +279,6 @@ export default async function prompts({
     },
   ]
     .filter(function (question) {
-      if (question.name === 'scope' && !promptScopes) return false;
-      
       if (question.name === 'tag' && !promptTag) return false;
 
       if (question.name === 'gitmoji' && !gitmoji) return false;
