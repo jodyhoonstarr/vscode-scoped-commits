@@ -22,7 +22,7 @@ Or inside VS Code:
 ### Prerequisites
 
 - Node.js ≥ 18
-- npm (comes with Node) — or yarn if you prefer
+- pnpm
 
 ### Steps
 
@@ -31,13 +31,13 @@ Or inside VS Code:
 cd vscode-conventional-commits   # (or wherever you cloned it)
 
 # 2. Install dependencies
-npm install
+pnpm install
 
 # 3. Download the gitmoji list (needed even if you leave gitmoji disabled)
 node prepare.js
 
 # 4. Package the VSIX
-npx @vscode/vsce package --no-yarn
+pnpm run build
 ```
 
 This produces `vscode-scoped-commits-1.0.0.vsix` in the repo root.
@@ -111,7 +111,7 @@ Example `.commitlintrc.json`:
 ## Run unit tests
 
 ```bash
-npm run test
+pnpm test
 ```
 
 28 tests covering `CommitMessage` serialization and commitlint config loading.

@@ -153,17 +153,17 @@ are ignored.
 See [INSTALL.md](./INSTALL.md) for full instructions. Quick version:
 
 ```bash
-npm install
+pnpm install
 node prepare.js
-npx @vscode/vsce package --no-yarn
+pnpm run build
 code --install-extension vscode-scoped-commits-1.0.0.vsix
 ```
 
 ### Tests
 
 ```bash
-npm test          # unit tests (vitest)
-npm run test:e2e  # end-to-end tests in a real VS Code host
+pnpm test          # unit tests (vitest)
+pnpm run test:e2e  # end-to-end tests in a real VS Code host
 ```
 
 ---
