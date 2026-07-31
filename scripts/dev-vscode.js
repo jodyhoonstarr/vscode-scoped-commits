@@ -4,7 +4,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 const repoRoot = path.resolve(__dirname, '..');
-const yarnBin = process.platform === 'win32' ? 'yarn.cmd' : 'yarn';
+const pnpmBin = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
 const codeBin = process.platform === 'win32' ? 'code.cmd' : 'code';
 const forwardedArgs = process.argv.slice(2);
 
@@ -26,7 +26,7 @@ let buildOutput = '';
 
 console.log('Starting webpack watch...');
 
-const webpackWatch = spawn(yarnBin, ['webpack-dev'], {
+const webpackWatch = spawn(pnpmBin, ['webpack-dev'], {
   cwd: repoRoot,
   stdio: ['ignore', 'pipe', 'pipe'],
 });

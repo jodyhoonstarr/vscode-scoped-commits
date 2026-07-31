@@ -7,12 +7,6 @@ settings:
 importers:
   .:
     dependencies:
-      "@commitlint/cli":
-        specifier: ^21.0.0
-        version: 21.2.0(@types/node@24.13.2)(typescript@6.0.3)
-      "@commitlint/config-conventional":
-        specifier: ^21.0.0
-        version: 21.2.0
       "@commitlint/load":
         specifier: ^21.0.0
         version: 21.2.0(@types/node@24.13.2)(typescript@6.0.3)
@@ -22,10 +16,10 @@ importers:
       "@commitlint/types":
         specifier: ^21.0.0
         version: 21.2.0
-      "@yi-xu-0100/conventional-commit-types-i18n":
-        specifier: 1.6.0
-        version: 1.6.0
     devDependencies:
+      "@commitlint/config-conventional":
+        specifier: ^21.0.0
+        version: 21.2.0
       "@types/mocha":
         specifier: ^10.0.0
         version: 10.0.10
@@ -33,7 +27,7 @@ importers:
         specifier: ^24.0.0
         version: 24.13.2
       "@types/vscode":
-        specifier: ^1.44.0
+        specifier: ^1.57.0
         version: 1.125.0
       "@vscode/test-electron":
         specifier: ^2.4.0
@@ -76,7 +70,7 @@ importers:
         version: 2.3.0(webpack@5.108.3)
       webpack:
         specifier: ^5.76.0
-        version: 5.108.3(webpack-cli@7.1.0)
+        version: 5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0)
       webpack-cli:
         specifier: ^7.0.0
         version: 7.1.0(js-yaml@4.3.0)(json5@2.2.3)(webpack@5.108.3)
@@ -185,14 +179,6 @@ packages:
       }
     engines: { node: ">=6.9.0" }
 
-  "@commitlint/cli@21.2.0":
-    resolution:
-      {
-        integrity: sha512-4GLVIhUaT3c3GBlQ0GB80/5H3xXdn/Tgw4lrsuoOQVDu2wl4Xw0GuzSar8xZKSMv4H3xaKaQXmvH91GmdyYBZA==,
-      }
-    engines: { node: ">=22.12.0" }
-    hasBin: true
-
   "@commitlint/config-conventional@21.2.0":
     resolution:
       {
@@ -221,27 +207,6 @@ packages:
       }
     engines: { node: ">=22.12.0" }
 
-  "@commitlint/format@21.2.0":
-    resolution:
-      {
-        integrity: sha512-c4q64xaav2U83t7k7RyzJerBZurPer7FxUOY0RL5L/6CZijZ7K+s6HIBGIghj0ey1P2+seRX0J9XQYtDued6tg==,
-      }
-    engines: { node: ">=22.12.0" }
-
-  "@commitlint/is-ignored@21.2.0":
-    resolution:
-      {
-        integrity: sha512-4/eB0vBN7L88O/oC4ajAEqi7j2ZfNgxl/+11RfAV9YosejZgDXhY2C9VcHnHJhOzPLoSy5P3Mg/46kqeyJfXKw==,
-      }
-    engines: { node: ">=22.12.0" }
-
-  "@commitlint/lint@21.2.0":
-    resolution:
-      {
-        integrity: sha512-ceO5dp9pLjEZ6y6qbq/uXWXDPykqqlTsyzoQ0NzecpisSJhK3kTy9qzQoPeJuWG/IMNdV1lO0RgmzqoAlSi1uw==,
-      }
-    engines: { node: ">=22.12.0" }
-
   "@commitlint/load@21.2.0":
     resolution:
       {
@@ -253,20 +218,6 @@ packages:
     resolution:
       {
         integrity: sha512-YxGoiXD/HXNXLJPrQwE5poXa+XH0CBEm+mdvbHQP0g6MV/dmJyUFCzPNzZbxL93GvZ70TmtTK0Z0/IBpAqHv8g==,
-      }
-    engines: { node: ">=22.12.0" }
-
-  "@commitlint/parse@21.2.0":
-    resolution:
-      {
-        integrity: sha512-QHWxG4d0PLTF634/AdyZ0MQS+CLn5YOuJlCFhMMlSGKFxzYGUetkHBj18xgBD+6fVzUrA2lrCdi/vlS2f/oYXg==,
-      }
-    engines: { node: ">=22.12.0" }
-
-  "@commitlint/read@21.2.0":
-    resolution:
-      {
-        integrity: sha512-ELx8Ovh/JoAw5lpvDgxc6Y0We9skf2IPI2RFN+gnYgDGjRdMSF8zeodxhZmcclLWzfUIF7hXLOa8gOlllYcvBA==,
       }
     engines: { node: ">=22.12.0" }
 
@@ -291,34 +242,12 @@ packages:
       }
     engines: { node: ">=22.12.0" }
 
-  "@commitlint/top-level@21.2.0":
-    resolution:
-      {
-        integrity: sha512-Y5gmQ+KxzqCrBFJfLvFEPvvwD3LDiNZoTT2yeFBm96M8qhmqSzQc5DvX3rheAaAMjyIvMXOCLS/mWfdpONsjyQ==,
-      }
-    engines: { node: ">=22.12.0" }
-
   "@commitlint/types@21.2.0":
     resolution:
       {
         integrity: sha512-7zVFCDB2reMvJH5dmbKnOQPjZEvjdJTH8jc0U/PIPU1r3/+vf5pD1HlfitV2MWsWXrvu7u39iY1lyLUPOaN0Gw==,
       }
     engines: { node: ">=22.12.0" }
-
-  "@conventional-changelog/git-client@2.7.0":
-    resolution:
-      {
-        integrity: sha512-j7A8/LBEQ+3rugMzPXoKYzyUPpw/0CBQCyvtTR7Lmu4olG4yRC/Tfkq79Mr3yuPs0SUitlO2HwGP3gitMJnRFw==,
-      }
-    engines: { node: ">=18" }
-    peerDependencies:
-      conventional-commits-filter: ^5.0.0
-      conventional-commits-parser: ^6.4.0
-    peerDependenciesMeta:
-      conventional-commits-filter:
-        optional: true
-      conventional-commits-parser:
-        optional: true
 
   "@conventional-changelog/template@1.2.0":
     resolution:
@@ -659,20 +588,6 @@ packages:
         integrity: sha512-Nqc90v4lWCXyakD6xNyNACBJNJ0tNCwj2WNk/7ivyacYHxiITVgmLUFXTBOeCdy79iz6HtN9Y31uw/jbLrdOAg==,
       }
     engines: { node: ">=20.0.0" }
-
-  "@simple-libs/child-process-utils@1.0.2":
-    resolution:
-      {
-        integrity: sha512-/4R8QKnd/8agJynkNdJmNw2MBxuFTRcNFnE5Sg/G+jkSsV8/UBgULMzhizWWW42p8L5H7flImV2ATi79Ove2Tw==,
-      }
-    engines: { node: ">=18" }
-
-  "@simple-libs/stream-utils@1.2.0":
-    resolution:
-      {
-        integrity: sha512-KxXvfapcixpz6rVEB6HPjOUZT22yN6v0vI0urQSk1L8MlEWPDFCZkhw2xmkyoTGYeFw7tWTZd7e3lVzRZRN/EA==,
-      }
-    engines: { node: ">=18" }
 
   "@simple-libs/stream-utils@2.0.0":
     resolution:
@@ -1049,12 +964,6 @@ packages:
     resolution:
       {
         integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==,
-      }
-
-  "@yi-xu-0100/conventional-commit-types-i18n@1.6.0":
-    resolution:
-      {
-        integrity: sha512-zIfzQHRbKJd6yOsgWJmRRKFc5pif1Z/O0Ac0NERHm9AmifucuRfCITJVsG5w5p+VGlR9AHS9vj87/KXMPc9/Xg==,
       }
 
   acorn-import-phases@1.0.4:
@@ -1435,13 +1344,6 @@ packages:
       }
     engines: { node: ">=12" }
 
-  cliui@9.0.1:
-    resolution:
-      {
-        integrity: sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w==,
-      }
-    engines: { node: ">=20" }
-
   clone-deep@4.0.1:
     resolution:
       {
@@ -1501,13 +1403,6 @@ packages:
       {
         integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==,
       }
-
-  conventional-changelog-angular@9.2.0:
-    resolution:
-      {
-        integrity: sha512-2EihZvM1KmbBGwuUow8lNXLe+ECRFsyOcV8X0197/WI7Rvvgfi55Oicfw0wxJTXGGIVXSfj+xBoNj+cxLlIiVw==,
-      }
-    engines: { node: ">=22" }
 
   conventional-changelog-conventionalcommits@10.2.0:
     resolution:
@@ -2058,17 +1953,6 @@ packages:
         integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==,
       }
     engines: { node: ">= 0.4" }
-
-  git-raw-commits@5.0.1:
-    resolution:
-      {
-        integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==,
-      }
-    engines: { node: ">=18" }
-    deprecated:
-      Deprecated and no longer maintained. Use
-      @conventional-changelog/git-client instead.
-    hasBin: true
 
   github-from-package@0.0.0:
     resolution:
@@ -2876,13 +2760,6 @@ packages:
       {
         integrity: sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==,
       }
-
-  meow@13.2.0:
-    resolution:
-      {
-        integrity: sha512-pxQJQzB6djGPXh08dacEloMFopsOqGVRKFPYvPOt9XDZ1HasbgDZA74CJGreSU4G3Ak7EFJGoiH2auq+yXISgA==,
-      }
-    engines: { node: ">=18" }
 
   meow@14.1.0:
     resolution:
@@ -4490,13 +4367,6 @@ packages:
       }
     engines: { node: ">=12" }
 
-  yargs-parser@22.0.0:
-    resolution:
-      {
-        integrity: sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw==,
-      }
-    engines: { node: ^20.19.0 || ^22.12.0 || >=23 }
-
   yargs-unparser@2.0.0:
     resolution:
       {
@@ -4510,13 +4380,6 @@ packages:
         integrity: sha512-GZtjxm/J/4TSxuL3FNYjCmLktBTnIw/rVmKSIyKeYAZpmJB2ig9VauCC5xsa82GNKVKDAqpOn3KVzNt0zmrU0g==,
       }
     engines: { node: ">=12" }
-
-  yargs@18.0.0:
-    resolution:
-      {
-        integrity: sha512-4UEqdc2RYGHZc7Doyqkrqiln3p9X2DZVxaGbwhn2pi7MrRagKaOcIKe8L3OxYcbhXLgLFUS3zAYuQjKBQgmuNg==,
-      }
-    engines: { node: ^20.19.0 || ^22.12.0 || >=23 }
 
   yauzl@3.4.0:
     resolution:
@@ -4549,34 +4412,34 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  "@azure/core-auth@1.10.1":
+  "@azure/core-auth@1.10.1(supports-color@8.1.1)":
     dependencies:
       "@azure/abort-controller": 2.1.2
-      "@azure/core-util": 1.13.1
+      "@azure/core-util": 1.13.1(supports-color@8.1.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
 
-  "@azure/core-client@1.10.2":
+  "@azure/core-client@1.10.2(supports-color@8.1.1)":
     dependencies:
       "@azure/abort-controller": 2.1.2
-      "@azure/core-auth": 1.10.1
-      "@azure/core-rest-pipeline": 1.24.0
+      "@azure/core-auth": 1.10.1(supports-color@8.1.1)
+      "@azure/core-rest-pipeline": 1.24.0(supports-color@8.1.1)
       "@azure/core-tracing": 1.3.1
-      "@azure/core-util": 1.13.1
-      "@azure/logger": 1.3.0
+      "@azure/core-util": 1.13.1(supports-color@8.1.1)
+      "@azure/logger": 1.3.0(supports-color@8.1.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
 
-  "@azure/core-rest-pipeline@1.24.0":
+  "@azure/core-rest-pipeline@1.24.0(supports-color@8.1.1)":
     dependencies:
       "@azure/abort-controller": 2.1.2
-      "@azure/core-auth": 1.10.1
+      "@azure/core-auth": 1.10.1(supports-color@8.1.1)
       "@azure/core-tracing": 1.3.1
-      "@azure/core-util": 1.13.1
-      "@azure/logger": 1.3.0
-      "@typespec/ts-http-runtime": 0.3.6
+      "@azure/core-util": 1.13.1(supports-color@8.1.1)
+      "@azure/logger": 1.3.0(supports-color@8.1.1)
+      "@typespec/ts-http-runtime": 0.3.6(supports-color@8.1.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
@@ -4585,23 +4448,23 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  "@azure/core-util@1.13.1":
+  "@azure/core-util@1.13.1(supports-color@8.1.1)":
     dependencies:
       "@azure/abort-controller": 2.1.2
-      "@typespec/ts-http-runtime": 0.3.6
+      "@typespec/ts-http-runtime": 0.3.6(supports-color@8.1.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
 
-  "@azure/identity@4.13.1":
+  "@azure/identity@4.13.1(supports-color@8.1.1)":
     dependencies:
       "@azure/abort-controller": 2.1.2
-      "@azure/core-auth": 1.10.1
-      "@azure/core-client": 1.10.2
-      "@azure/core-rest-pipeline": 1.24.0
+      "@azure/core-auth": 1.10.1(supports-color@8.1.1)
+      "@azure/core-client": 1.10.2(supports-color@8.1.1)
+      "@azure/core-rest-pipeline": 1.24.0(supports-color@8.1.1)
       "@azure/core-tracing": 1.3.1
-      "@azure/core-util": 1.13.1
-      "@azure/logger": 1.3.0
+      "@azure/core-util": 1.13.1(supports-color@8.1.1)
+      "@azure/logger": 1.3.0(supports-color@8.1.1)
       "@azure/msal-browser": 5.15.0
       "@azure/msal-node": 5.3.0
       open: 10.2.0
@@ -4609,9 +4472,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@azure/logger@1.3.0":
+  "@azure/logger@1.3.0(supports-color@8.1.1)":
     dependencies:
-      "@typespec/ts-http-runtime": 0.3.6
+      "@typespec/ts-http-runtime": 0.3.6(supports-color@8.1.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
@@ -4635,22 +4498,6 @@ snapshots:
 
   "@babel/helper-validator-identifier@7.29.7": {}
 
-  "@commitlint/cli@21.2.0(@types/node@24.13.2)(typescript@6.0.3)":
-    dependencies:
-      "@commitlint/config-conventional": 21.2.0
-      "@commitlint/format": 21.2.0
-      "@commitlint/lint": 21.2.0
-      "@commitlint/load": 21.2.0(@types/node@24.13.2)(typescript@6.0.3)
-      "@commitlint/read": 21.2.0
-      "@commitlint/types": 21.2.0
-      tinyexec: 1.2.4
-      yargs: 18.0.0
-    transitivePeerDependencies:
-      - "@types/node"
-      - conventional-commits-filter
-      - conventional-commits-parser
-      - typescript
-
   "@commitlint/config-conventional@21.2.0":
     dependencies:
       "@commitlint/types": 21.2.0
@@ -4667,23 +4514,6 @@ snapshots:
       es-toolkit: 1.49.0
 
   "@commitlint/execute-rule@21.0.1": {}
-
-  "@commitlint/format@21.2.0":
-    dependencies:
-      "@commitlint/types": 21.2.0
-      picocolors: 1.1.1
-
-  "@commitlint/is-ignored@21.2.0":
-    dependencies:
-      "@commitlint/types": 21.2.0
-      semver: 7.8.5
-
-  "@commitlint/lint@21.2.0":
-    dependencies:
-      "@commitlint/is-ignored": 21.2.0
-      "@commitlint/parse": 21.2.0
-      "@commitlint/rules": 21.2.0
-      "@commitlint/types": 21.2.0
 
   "@commitlint/load@21.2.0(@types/node@24.13.2)(typescript@6.0.3)":
     dependencies:
@@ -4702,22 +4532,6 @@ snapshots:
 
   "@commitlint/message@21.2.0": {}
 
-  "@commitlint/parse@21.2.0":
-    dependencies:
-      "@commitlint/types": 21.2.0
-      conventional-changelog-angular: 9.2.0
-      conventional-commits-parser: 7.0.0
-
-  "@commitlint/read@21.2.0":
-    dependencies:
-      "@commitlint/top-level": 21.2.0
-      "@commitlint/types": 21.2.0
-      git-raw-commits: 5.0.1
-      tinyexec: 1.2.4
-    transitivePeerDependencies:
-      - conventional-commits-filter
-      - conventional-commits-parser
-
   "@commitlint/resolve-extends@21.2.0":
     dependencies:
       "@commitlint/config-validator": 21.2.0
@@ -4735,20 +4549,10 @@ snapshots:
 
   "@commitlint/to-lines@21.0.1": {}
 
-  "@commitlint/top-level@21.2.0":
-    dependencies:
-      escalade: 3.2.0
-
   "@commitlint/types@21.2.0":
     dependencies:
       conventional-commits-parser: 7.0.0
       picocolors: 1.1.1
-
-  "@conventional-changelog/git-client@2.7.0":
-    dependencies:
-      "@simple-libs/child-process-utils": 1.0.2
-      "@simple-libs/stream-utils": 1.2.0
-      semver: 7.8.5
 
   "@conventional-changelog/template@1.2.0": {}
 
@@ -4877,18 +4681,18 @@ snapshots:
     dependencies:
       "@secretlint/types": 10.2.2
 
-  "@secretlint/config-loader@10.2.2":
+  "@secretlint/config-loader@10.2.2(supports-color@8.1.1)":
     dependencies:
       "@secretlint/profiler": 10.2.2
       "@secretlint/resolver": 10.2.2
       "@secretlint/types": 10.2.2
       ajv: 8.20.0
       debug: 4.4.3(supports-color@8.1.1)
-      rc-config-loader: 4.1.4
+      rc-config-loader: 4.1.4(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
-  "@secretlint/core@10.2.2":
+  "@secretlint/core@10.2.2(supports-color@8.1.1)":
     dependencies:
       "@secretlint/profiler": 10.2.2
       "@secretlint/types": 10.2.2
@@ -4897,11 +4701,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@secretlint/formatter@10.2.2":
+  "@secretlint/formatter@10.2.2(supports-color@8.1.1)":
     dependencies:
       "@secretlint/resolver": 10.2.2
       "@secretlint/types": 10.2.2
-      "@textlint/linter-formatter": 15.7.1
+      "@textlint/linter-formatter": 15.7.1(supports-color@8.1.1)
       "@textlint/module-interop": 15.7.1
       "@textlint/types": 15.7.1
       chalk: 5.6.2
@@ -4913,11 +4717,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@secretlint/node@10.2.2":
+  "@secretlint/node@10.2.2(supports-color@8.1.1)":
     dependencies:
-      "@secretlint/config-loader": 10.2.2
-      "@secretlint/core": 10.2.2
-      "@secretlint/formatter": 10.2.2
+      "@secretlint/config-loader": 10.2.2(supports-color@8.1.1)
+      "@secretlint/core": 10.2.2(supports-color@8.1.1)
+      "@secretlint/formatter": 10.2.2(supports-color@8.1.1)
       "@secretlint/profiler": 10.2.2
       "@secretlint/source-creator": 10.2.2
       "@secretlint/types": 10.2.2
@@ -4947,12 +4751,6 @@ snapshots:
 
   "@secretlint/types@10.2.2": {}
 
-  "@simple-libs/child-process-utils@1.0.2":
-    dependencies:
-      "@simple-libs/stream-utils": 1.2.0
-
-  "@simple-libs/stream-utils@1.2.0": {}
-
   "@simple-libs/stream-utils@2.0.0": {}
 
   "@sindresorhus/merge-streams@2.3.0": {}
@@ -4961,7 +4759,7 @@ snapshots:
 
   "@textlint/ast-node-types@15.7.1": {}
 
-  "@textlint/linter-formatter@15.7.1":
+  "@textlint/linter-formatter@15.7.1(supports-color@8.1.1)":
     dependencies:
       "@azu/format-text": 1.0.2
       "@azu/style-format": 1.0.1
@@ -5025,7 +4823,7 @@ snapshots:
 
   "@types/vscode@1.125.0": {}
 
-  "@typespec/ts-http-runtime@0.3.6":
+  "@typespec/ts-http-runtime@0.3.6(supports-color@8.1.1)":
     dependencies:
       http-proxy-agent: 7.0.2(supports-color@8.1.1)
       https-proxy-agent: 7.0.6(supports-color@8.1.1)
@@ -5125,8 +4923,8 @@ snapshots:
 
   "@vscode/vsce@3.9.2(supports-color@8.1.1)":
     dependencies:
-      "@azure/identity": 4.13.1
-      "@secretlint/node": 10.2.2
+      "@azure/identity": 4.13.1(supports-color@8.1.1)
+      "@secretlint/node": 10.2.2(supports-color@8.1.1)
       "@secretlint/secretlint-formatter-sarif": 10.2.2
       "@secretlint/secretlint-rule-no-dotenv": 10.2.2
       "@secretlint/secretlint-rule-preset-recommend": 10.2.2
@@ -5238,8 +5036,6 @@ snapshots:
   "@xtuc/ieee754@1.2.0": {}
 
   "@xtuc/long@4.2.2": {}
-
-  "@yi-xu-0100/conventional-commit-types-i18n@1.6.0": {}
 
   acorn-import-phases@1.0.4(acorn@8.17.0):
     dependencies:
@@ -5425,7 +5221,7 @@ snapshots:
   clean-webpack-plugin@4.0.0(webpack@5.108.3):
     dependencies:
       del: 4.1.1
-      webpack: 5.108.3(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0)
 
   cli-cursor@5.0.0:
     dependencies:
@@ -5443,12 +5239,6 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
-
-  cliui@9.0.1:
-    dependencies:
-      string-width: 7.2.0
-      strip-ansi: 7.2.0
-      wrap-ansi: 9.0.2
 
   clone-deep@4.0.1:
     dependencies:
@@ -5475,10 +5265,6 @@ snapshots:
   commander@2.20.3: {}
 
   concat-map@0.0.1: {}
-
-  conventional-changelog-angular@9.2.0:
-    dependencies:
-      "@conventional-changelog/template": 1.2.0
 
   conventional-changelog-conventionalcommits@10.2.0:
     dependencies:
@@ -5774,14 +5560,6 @@ snapshots:
     dependencies:
       dunder-proto: 1.0.1
       es-object-atoms: 1.1.2
-
-  git-raw-commits@5.0.1:
-    dependencies:
-      "@conventional-changelog/git-client": 2.7.0
-      meow: 13.2.0
-    transitivePeerDependencies:
-      - conventional-commits-filter
-      - conventional-commits-parser
 
   github-from-package@0.0.0:
     optional: true
@@ -6213,8 +5991,6 @@ snapshots:
 
   mdurl@2.0.0: {}
 
-  meow@13.2.0: {}
-
   meow@14.1.0: {}
 
   merge-stream@2.0.0: {}
@@ -6256,13 +6032,16 @@ snapshots:
   minimist@1.2.8:
     optional: true
 
-  minimizer-webpack-plugin@5.6.1(webpack@5.108.3):
+  minimizer-webpack-plugin@5.6.1(lightningcss@1.32.0)(postcss@8.5.16)(webpack@5.108.3):
     dependencies:
       "@jridgewell/trace-mapping": 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.48.0
-      webpack: 5.108.3(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0)
+    optionalDependencies:
+      lightningcss: 1.32.0
+      postcss: 8.5.16
 
   minipass@7.1.3: {}
 
@@ -6517,7 +6296,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  rc-config-loader@4.1.4:
+  rc-config-loader@4.1.4(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       js-yaml: 4.3.0
@@ -6646,8 +6425,8 @@ snapshots:
   secretlint@10.2.2(supports-color@8.1.1):
     dependencies:
       "@secretlint/config-creator": 10.2.2
-      "@secretlint/formatter": 10.2.2
-      "@secretlint/node": 10.2.2
+      "@secretlint/formatter": 10.2.2(supports-color@8.1.1)
+      "@secretlint/node": 10.2.2(supports-color@8.1.1)
       "@secretlint/profiler": 10.2.2
       debug: 4.4.3(supports-color@8.1.1)
       globby: 14.1.0
@@ -6771,7 +6550,7 @@ snapshots:
   string-replace-loader@3.3.0(webpack@5.108.3):
     dependencies:
       schema-utils: 4.3.3
-      webpack: 5.108.3(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0)
 
   string-width@4.2.3:
     dependencies:
@@ -6905,7 +6684,7 @@ snapshots:
       picomatch: 4.0.4
       source-map: 0.7.6
       typescript: 6.0.3
-      webpack: 5.108.3(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0)
 
   tslib@2.8.1: {}
 
@@ -7000,7 +6779,7 @@ snapshots:
 
   warnings-to-errors-webpack-plugin@2.3.0(webpack@5.108.3):
     dependencies:
-      webpack: 5.108.3(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0)
 
   watchpack@2.5.2:
     dependencies:
@@ -7015,7 +6794,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.108.3(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0)
       webpack-merge: 6.0.1
     optionalDependencies:
       js-yaml: 4.3.0
@@ -7029,7 +6808,7 @@ snapshots:
 
   webpack-sources@3.5.0: {}
 
-  webpack@5.108.3(webpack-cli@7.1.0):
+  webpack@5.108.3(lightningcss@1.32.0)(postcss@8.5.16)(webpack-cli@7.1.0):
     dependencies:
       "@types/estree": 1.0.9
       "@types/json-schema": 7.0.15
@@ -7047,7 +6826,7 @@ snapshots:
       graceful-fs: 4.2.11
       loader-runner: 4.3.2
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.6.1(webpack@5.108.3)
+      minimizer-webpack-plugin: 5.6.1(lightningcss@1.32.0)(postcss@8.5.16)(webpack@5.108.3)
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
@@ -7134,8 +6913,6 @@ snapshots:
 
   yargs-parser@21.1.1: {}
 
-  yargs-parser@22.0.0: {}
-
   yargs-unparser@2.0.0:
     dependencies:
       camelcase: 6.3.0
@@ -7152,15 +6929,6 @@ snapshots:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
-
-  yargs@18.0.0:
-    dependencies:
-      cliui: 9.0.1
-      escalade: 3.2.0
-      get-caller-file: 2.0.5
-      string-width: 7.2.0
-      y18n: 5.0.8
-      yargs-parser: 22.0.0
 
   yauzl@3.4.0:
     dependencies:

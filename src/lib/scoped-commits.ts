@@ -107,6 +107,13 @@ export default function createScopedCommits() {
     try {
       output.info('Scoped commits started.');
 
+      if (!vscode.workspace.isTrusted) {
+        await vscode.window.showWarningMessage(
+          'Scoped Commits requires a trusted workspace because commitlint configuration may execute code.',
+        );
+        return;
+      }
+
       // 1. output basic information
       output.info(`VSCode version: ${vscode.version}`);
       output.extensionVersion('Git', 'vscode.git');

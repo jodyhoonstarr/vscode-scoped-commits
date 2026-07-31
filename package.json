@@ -6,8 +6,9 @@
   "version": "1.0.0",
   "publisher": "scoped-commits",
   "engines": {
-    "vscode": "^1.44.0"
+    "vscode": "^1.57.0"
   },
+  "packageManager": "pnpm@11.18.0",
   "categories": [
     "Snippets",
     "SCM Providers"
@@ -34,6 +35,12 @@
     "onCommand:extension.scopedCommits.showNewVersionNotes"
   ],
   "main": "./dist/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Scoped Commits loads commitlint configuration from the workspace and requires a trusted workspace."
+    }
+  },
   "contributes": {
     "commands": [
       {
@@ -171,9 +178,10 @@
   "devDependencies": {
     "@types/mocha": "^10.0.0",
     "@types/node": "^24.0.0",
-    "@types/vscode": "^1.44.0",
+    "@types/vscode": "^1.57.0",
     "@vscode/test-electron": "^2.4.0",
     "@vscode/vsce": "^3.0.0",
+    "@commitlint/config-conventional": "^21.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "glob": "^13.0.0",
     "husky": "9",
@@ -194,11 +202,8 @@
     ]
   },
   "dependencies": {
-    "@commitlint/cli": "^21.0.0",
-    "@commitlint/config-conventional": "^21.0.0",
     "@commitlint/load": "^21.0.0",
     "@commitlint/rules": "^21.0.0",
-    "@commitlint/types": "^21.0.0",
-    "@yi-xu-0100/conventional-commit-types-i18n": "1.6.0"
+    "@commitlint/types": "^21.0.0"
   }
 }
