@@ -154,10 +154,13 @@ See [INSTALL.md](./INSTALL.md) for full instructions. Quick version:
 
 ```bash
 pnpm install
-node prepare.js
+pnpm run webpack
 pnpm run build
 code --install-extension vscode-scoped-commits-1.0.0.vsix
 ```
+
+`pnpm run webpack` creates `dist/extension.js`, the extension entrypoint.
+`pnpm run build` then runs the preparation step and packages the VSIX.
 
 ### Tests
 

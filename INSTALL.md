@@ -33,12 +33,16 @@ cd vscode-conventional-commits   # (or wherever you cloned it)
 # 2. Install dependencies
 pnpm install
 
-# 3. Download the gitmoji list (needed even if you leave gitmoji disabled)
-node prepare.js
+# 3. Build the extension bundle
+pnpm run webpack
 
-# 4. Package the VSIX
+# 4. Download the gitmoji list and package the VSIX
 pnpm run build
 ```
+
+`pnpm run build` runs `prepare.js` and packages the bundle; the separate
+`pnpm run webpack` step is required because it creates `dist/extension.js`, the
+entrypoint declared in `package.json`.
 
 This produces `vscode-scoped-commits-1.0.0.vsix` in the repo root.
 

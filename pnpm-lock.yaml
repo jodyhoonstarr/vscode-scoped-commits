@@ -19,6 +19,9 @@ importers:
       "@commitlint/rules":
         specifier: ^21.0.0
         version: 21.2.0
+      "@commitlint/types":
+        specifier: ^21.0.0
+        version: 21.2.0
       "@yi-xu-0100/conventional-commit-types-i18n":
         specifier: 1.6.0
         version: 1.6.0
